@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("KCK_APP")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+60084e6e16bf6888e21731319523877b29304af0")]
 [assembly: System.Reflection.AssemblyProductAttribute("KCK_APP")]
 [assembly: System.Reflection.AssemblyTitleAttribute("KCK_APP")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

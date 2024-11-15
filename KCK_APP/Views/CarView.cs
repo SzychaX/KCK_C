@@ -45,6 +45,7 @@ namespace KCK_APP.Views
             var model = AnsiConsole.Ask<string>("Model pojazdu: ");
             var year = AnsiConsole.Ask<int>("Rocznik samochodu: ");
             var engine = AnsiConsole.Ask<int>("Silnik samochodu: ");
+            var horsepower = AnsiConsole.Ask<int>("Moc samochodu w KM: ");
             var mileage = AnsiConsole.Ask<int>("Przebieg samochodu: ");
             var body = AnsiConsole.Ask<string>("Rodzaj nadwozia: ");
             var color = AnsiConsole.Ask<string>("Kolor samochodu: ");
@@ -56,6 +57,7 @@ namespace KCK_APP.Views
                 Model = model,
                 Year = year,
                 Engine = engine,
+                HorsePower = horsepower,
                 Mileage = mileage,
                 Body = body,
                 Color = color,
@@ -81,6 +83,7 @@ namespace KCK_APP.Views
                 table.AddColumn("Model");
                 table.AddColumn("Rocznik");
                 table.AddColumn("Silnik");
+                table.AddColumn("Moc");
                 table.AddColumn("Przebieg");
                 table.AddColumn("Nadwozie");
                 table.AddColumn("Kolor");
@@ -88,7 +91,7 @@ namespace KCK_APP.Views
 
                 foreach (var car in cars)
                 {
-                    table.AddRow(car.Id.ToString(), car.Make, car.Model, car.Year.ToString(), car.Engine.ToString(), car.Mileage.ToString(), car.Body, car.Color, car.Price.ToString());
+                    table.AddRow(car.Id.ToString(), car.Make, car.Model, car.Year.ToString(), car.Engine.ToString(), car.HorsePower.ToString(), car.Mileage.ToString(), car.Body, car.Color, car.Price.ToString());
                 }
                 AnsiConsole.Render(table);
             }

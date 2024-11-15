@@ -19,9 +19,10 @@ namespace KCK_APP.Services
                     Id SERIAL PRIMARY KEY,
                     Make VARCHAR(50),
                     Model VARCHAR(50),
-                    Year INT,
+                    Year INTEGER,
                     Mileage DECIMAL,
                     Engine DECIMAL,
+                    HorsePower INTEGER,
                     Body VARCHAR(50),
                     COLOR VARCHAR(50),
                     Price DECIMAL
@@ -36,13 +37,14 @@ namespace KCK_APP.Services
             conn.Open();
             
             using var cmd = new NpgsqlCommand(@"
-                INSERT INTO Cars (Make, Model, Year, Mileage, Engine, Body, Color, Price)
-                VALUES (@make, @model, @year, @mileage, @engine, @body, @color, @price)", conn);
+                INSERT INTO Cars (Make, Model, Year, Mileage, Engine, HorsePower, Body, Color, Price)
+                VALUES (@make, @model, @year, @mileage, @engine, @horsePower, @body, @color, @price)", conn);
             cmd.Parameters.AddWithValue("make", car.Make);
             cmd.Parameters.AddWithValue("model", car.Model);
             cmd.Parameters.AddWithValue("year", car.Year);
             cmd.Parameters.AddWithValue("mileage", car.Mileage);
             cmd.Parameters.AddWithValue("engine", car.Engine);
+            cmd.Parameters.AddWithValue("horsePower", car.HorsePower);
             cmd.Parameters.AddWithValue("body", car.Body);
             cmd.Parameters.AddWithValue("color", car.Color);
             cmd.Parameters.AddWithValue("price", car.Price);
@@ -62,12 +64,13 @@ namespace KCK_APP.Services
             {
                 cars.Add(new Car
                 {
-                    Id = reader.GetInt64(0),
+                    Id = reader.GetInt64(0),        // Zmieniłem na `GetInt64` dla Id, jeśli to BigInt
                     Make = reader.GetString(1),
                     Model = reader.GetString(2),
-                    Year = reader.GetInt32(3),
-                    Mileage = reader.GetDecimal(5),
-                    Engine = reader.GetDecimal(6),
+                    Year = reader.GetInt32(3),      // Zmieniłem na `GetInt32` dla Year
+                    Mileage = reader.GetDecimal(4),
+                    Engine = reader.GetDecimal(5),
+                    HorsePower = reader.GetInt32(6),
                     Body = reader.GetString(7),
                     Color = reader.GetString(8),
                     Price = reader.GetDecimal(9)

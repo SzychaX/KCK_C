@@ -79,5 +79,127 @@ namespace KCK_APP.Services
 
             return cars;
         }
+        
+        public List<Car> SearchCars(string make, decimal? maxMileage, int? minHorsePower)
+        {
+            var cars = new List<Car>();
+
+            // Budujemy zapytanie dynamicznie w zależności od tego, które parametry są dostępne
+            var query = "SELECT * FROM Cars WHERE 1=1"; // Początkowy warunek, który zawsze jest prawdziwy
+
+            if (!string.IsNullOrEmpty(make)) // Jeżeli marka nie jest pusta
+            {
+                query += " AND Make = @make";
+            }
+
+            if (maxMileage.HasValue) // Jeżeli maksymalny przebieg jest podany
+            {
+                query += " AND Mileage <= @maxMileage";
+            }
+
+            if (minHorsePower.HasValue) // Jeżeli minimalna moc jest podana
+            {
+                query += " AND HorsePower >= @minHorsePower";
+            }
+
+            using var conn = new NpgsqlConnection(ConnectionString);
+            conn.Open();
+
+            using var cmd = new NpgsqlCommand(query, conn);
+
+            // Dodajemy tylko te parametry, które zostały przekazane
+            if (!string.IsNullOrEmpty(make))
+            {
+                cmd.Parameters.AddWithValue("make", make);
+            }
+
+            if (maxMileage.HasValue)
+            {
+                cmd.Parameters.AddWithValue("maxMileage", maxMileage);
+            }
+
+            if (minHorsePower.HasValue)
+            {
+                cmd.Parameters.AddWithValue("minHorsePower", minHorsePower);
+            }
+
+            using var reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                cars.Add(new Car
+                {
+                    Id = reader.GetInt64(0),
+                    Make = reader.GetString(1),
+                    Model = reader.GetString(2),
+                    Year = reader.GetInt32(3),
+                    Mileage = reader.GetDecimal(4),
+                    Engine = reader.GetDecimal(5),
+                    HorsePower = reader.GetInt32(6),
+                    Body = reader.GetString(7),
+                    Color = reader.GetString(8),
+                    Price = reader.GetDecimal(9)
+                });
+            }
+
+            return cars;
+        }
+        public List<Car> GetFilteredCars(string make, string model, int? minYear, int? maxYear, decimal? minMileage, decimal? maxMileage, decimal? minPrice, decimal? maxPrice)
+{
+    var cars = new List<Car>();
+
+    using (var connection = new NpgsqlConnection(ConnectionString))
+    {
+        connection.Open();
+
+        string query = @"
+    SELECT * FROM Cars
+    WHERE (@make IS NULL OR Make = @make::VARCHAR)
+      AND (@model IS NULL OR Model = @model::VARCHAR)
+      AND (@minYear IS NULL OR Year >= @minYear::INT)
+      AND (@maxYear IS NULL OR Year <= @maxYear::INT)
+      AND (@minMileage IS NULL OR Mileage >= @minMileage::NUMERIC)
+      AND (@maxMileage IS NULL OR Mileage <= @maxMileage::NUMERIC)
+      AND (@minPrice IS NULL OR Price >= @minPrice::NUMERIC)
+      AND (@maxPrice IS NULL OR Price <= @maxPrice::NUMERIC)
+";
+
+        using (var command = new NpgsqlCommand(query, connection))
+        {
+            command.Parameters.AddWithValue("make", (object?)make ?? DBNull.Value);
+            command.Parameters.AddWithValue("model", (object?)model ?? DBNull.Value);
+            command.Parameters.AddWithValue("minYear", (object?)minYear ?? DBNull.Value);
+            command.Parameters.AddWithValue("maxYear", (object?)maxYear ?? DBNull.Value);
+            command.Parameters.AddWithValue("minMileage", (object?)minMileage ?? DBNull.Value);
+            command.Parameters.AddWithValue("maxMileage", (object?)maxMileage ?? DBNull.Value);
+            command.Parameters.AddWithValue("minPrice", (object?)minPrice ?? DBNull.Value);
+            command.Parameters.AddWithValue("maxPrice", (object?)maxPrice ?? DBNull.Value);
+
+            using (var reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    cars.Add(new Car
+                    {
+                        Id = reader.GetInt64(0),        // Zmieniłem na `GetInt64` dla Id, jeśli to BigInt
+                        Make = reader.GetString(1),
+                        Model = reader.GetString(2),
+                        Year = reader.GetInt32(3),      // Zmieniłem na `GetInt32` dla Year
+                        Mileage = reader.GetDecimal(4),
+                        Engine = reader.GetDecimal(5),
+                        HorsePower = reader.GetInt32(6),
+                        Body = reader.GetString(7),
+                        Color = reader.GetString(8),
+                        Price = reader.GetDecimal(9)
+                    });
+                }
+            }
+        }
+    }
+
+    return cars;
+}
+
+
+
     }
 }     

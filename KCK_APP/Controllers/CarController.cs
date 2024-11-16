@@ -28,9 +28,24 @@ namespace KCK_APP.Controllers
             return _databaseService.SearchCars(make, maxMileage, minHorsePower);
         }
         
-        public List<Car> GetFilteredCars(string make, string model, int? minYear, int? maxYear, decimal? minMileage, decimal? maxMileage, decimal? minPrice, decimal? maxPrice)
+        public List<Car> GetFilteredCars(string make, string model, int? minYear, int? maxYear, decimal? minMileage, decimal? maxMileage, decimal? minPrice, decimal? maxPrice, string color)
         {
-            return _databaseService.GetFilteredCars(make, model, minYear, maxYear, minMileage, maxMileage, minPrice, maxPrice);
+            return _databaseService.GetFilteredCars(make, model, minYear, maxYear, minMileage, maxMileage, minPrice, maxPrice, color);
+        }
+
+        public List<string> GetUniqueMakes()
+        {
+            return _databaseService.GetUniqueMakes();
+        }
+
+        public List<string> GetUniqueBodies()
+        {
+            return _databaseService.GetUniqueBodies();
+        }
+
+        public List<string> GetUniqueColors()
+        {
+            return _databaseService.GetUniqueColors();
         }
 
 

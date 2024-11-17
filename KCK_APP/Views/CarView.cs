@@ -3,7 +3,7 @@ using KCK_APP.Models;
 using Spectre.Console;
 using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices.JavaScript;
+using System.Linq;
 
 namespace KCK_APP.Views
 {
@@ -88,10 +88,10 @@ namespace KCK_APP.Views
                 {
                     table.AddRow(car.Id.ToString(), car.Make, car.Model, car.Year.ToString(), car.Engine.ToString(), car.HorsePower.ToString(), car.Mileage.ToString(), car.Body, car.Color, car.Price.ToString());
                 }
-                AnsiConsole.Render(table);
+                RenderTable(table);
             }
         }
-        
+
         public void SearchCars()
         {
             // Wpisz markę (można pozostawić puste)
@@ -99,7 +99,7 @@ namespace KCK_APP.Views
 
             // Maksymalny przebieg (można pozostawić puste)
             decimal? maxMileage = null;
-            var maxMileageInput = AnsiConsole.Prompt(new TextPrompt<string>("Maksymalny przebieg [gray](pomiń, jeśli dowolny)[/]: ").AllowEmpty());
+            var maxMileageInput = AnsiConsole.Prompt(new TextPrompt<string>("Maksymalny przebieg [gray](pomiń, jeśli dowolna)[/]: ").AllowEmpty());
             if (!string.IsNullOrEmpty(maxMileageInput))
             {
                 maxMileage = decimal.Parse(maxMileageInput);
@@ -118,7 +118,6 @@ namespace KCK_APP.Views
             if (results.Count == 0)
             {
                 AnsiConsole.MarkupLine("[red]Nie znaleziono samochodów według podanych kryteriów.[/]");
-
             }
             else
             {
@@ -128,132 +127,150 @@ namespace KCK_APP.Views
                 {
                     table.AddRow(car.Id.ToString(), car.Make, car.Model, car.Year.ToString(), car.Engine.ToString(), car.HorsePower.ToString(), car.Mileage.ToString(), car.Body, car.Color, car.Price.ToString());
                 }
-                AnsiConsole.Render(table);
+                RenderTable(table);
             }
         }
 
         public void SearchCarsMenuLive()
-{
-    string make = null;
-    string body = null;
-    string color = null;
-    int? minYear = null;
-    int? maxYear = null;
-    decimal? minMileage = null;
-    decimal? maxMileage = null;
-    decimal? minPrice = null;
-    decimal? maxPrice = null;
-
-    // Pobierz unikalne wartości do menu
-    var makes = _carController.GetUniqueMakes();
-    var bodies = _carController.GetUniqueBodies();
-    var colors = _carController.GetUniqueColors();
-
-    // Funkcja aktualizująca tabelę wyników
-    void UpdateTable()
-    {
-        var filteredCars = _carController.GetFilteredCars(make, body, minYear, maxYear, minMileage, maxMileage, minPrice, maxPrice, color);
-
-        var table = CreateCarTable();
-
-        foreach (var car in filteredCars)
         {
-            table.AddRow(car.Id.ToString(), car.Make, car.Model, car.Year.ToString(), car.Engine.ToString(),
-                         car.Mileage.ToString(), car.HorsePower.ToString(), car.Body, car.Color, car.Price.ToString());
+            string make1 = null;
+            string body1 = null;
+            string color1 = null;
+            int? minYear1 = null;
+            int? maxYear1 = null;
+            decimal? minMileage1 = null;
+            decimal? maxMileage1 = null;
+            decimal? minPrice1 = null;
+            decimal? maxPrice1 = null;
+
+            // Pobierz unikalne wartości do menu
+            var makes = _carController.GetUniqueMakes();
+            var bodies = _carController.GetUniqueBodies();
+            var colors = _carController.GetUniqueColors();
+            
+            makes.Add("[Wyczyść filtr]");
+            bodies.Add("[Wyczyść filtr]");
+            colors.Add("[Wyczyść filtr]");
+
+            // Funkcja aktualizująca tabelę wyników
+            void UpdateTable()
+            {
+                var filteredCars = _carController.GetFilteredCars(make1, body1, minYear1, maxYear1, minMileage1, maxMileage1, minPrice1, maxPrice1, color1);
+                
+                Console.WriteLine($"Liczba znalezionych samochodów: {filteredCars.Count}");
+                foreach (var car in filteredCars)
+                {
+                    Console.WriteLine($"Samochód: {car.Make}, {car.Model}, {car.Year}");
+                }
+
+                var table = CreateCarTable();
+
+                foreach (var car in filteredCars)
+                {
+                    table.AddRow(car.Id.ToString(), car.Make, car.Model, car.Year.ToString(), car.Engine.ToString(),
+                                  car.HorsePower.ToString(),car.Mileage.ToString(), car.Body, car.Color, car.Price.ToString());
+                }
+
+                RenderTable(table);
+            }
+
+            // Pierwsze wywołanie: Wyświetl wszystkie wyniki
+            UpdateTable();
+
+            // Pętla obsługi kryteriów filtrowania
+            while (true)
+            {
+                var choice = AnsiConsole.Prompt(
+                    new SelectionPrompt<string>()
+                        .Title("Co chcesz zmienić?")
+                        .AddChoices("Marka", "Nadwozie", "Kolor", "Minimalny rocznik", "Maksymalny rocznik",
+                                    "Minimalny przebieg", "Maksymalny przebieg", 
+                                    "Minimalna cena", "Maksymalna cena", "Wyczyść wszystkie filtry", "Powrót"));
+
+                switch (choice)
+                {
+                    case "Marka":
+                        var safeMakes = makes.Select(m => Markup.Escape(m)).ToList();
+                        make1 = AnsiConsole.Prompt(
+                            new SelectionPrompt<string>()
+                                .Title("Wybierz markę:")
+                                .AddChoices(safeMakes)
+                                .PageSize(10)
+                        );
+
+                        if (make1 == "[[Wyczyść filtr]]")
+                        {
+                            make1 = null;
+                        }
+                        break;
+
+                    case "Nadwozie":
+                        var safeBodies = bodies.Select(b => Markup.Escape(b)).ToList();
+                        body1 = AnsiConsole.Prompt(
+                            new SelectionPrompt<string>()
+                                .Title("Wybierz nadwozie:")
+                                .AddChoices(safeBodies)
+                                .PageSize(10)
+                        );
+                        if (body1 == "[[Wyczyść filtr]]") body1 = null;
+                        break;
+
+                    case "Kolor":
+                        var safeColors = colors.Select(c => Markup.Escape(c)).ToList();
+                        color1 = AnsiConsole.Prompt(
+                            new SelectionPrompt<string>()
+                                .Title("Wybierz kolor:")
+                                .AddChoices(safeColors)
+                                .PageSize(10)
+                        );
+                        if (color1 == "[[Wyczyść filtr]]") color1 = null;
+                        break;
+
+                    case "Minimalny rocznik":
+                        minYear1 = AnsiConsole.Ask<int?>("Podaj minimalny rocznik [gray](lub zostaw puste):[/]", null);
+                        break;
+
+                    case "Maksymalny rocznik":
+                        maxYear1 = AnsiConsole.Ask<int?>("Podaj maksymalny rocznik [gray](lub zostaw puste):[/]", null);
+                        break;
+
+                    case "Minimalny przebieg":
+                        minMileage1 = AnsiConsole.Ask<decimal?>("Podaj minimalny przebieg [gray](lub zostaw puste):[/]", null);
+                        break;
+
+                    case "Maksymalny przebieg":
+                        maxMileage1 = AnsiConsole.Ask<decimal?>("Podaj maksymalny przebieg [gray](lub zostaw puste):[/]", null);
+                        break;
+
+                    case "Minimalna cena":
+                        minPrice1 = AnsiConsole.Ask<decimal?>("Podaj minimalną cenę [gray](lub zostaw puste):[/]", null);
+                        break;
+
+                    case "Maksymalna cena":
+                        maxPrice1 = AnsiConsole.Ask<decimal?>("Podaj maksymalną cenę [gray](lub zostaw puste):[/]", null);
+                        break;
+                    
+                    case "Wyczyść wszystkie filtry":
+                        make1 = null;
+                        body1 = null;
+                        color1 = null;
+                        minYear1 = null;
+                        maxYear1 = null;
+                        minMileage1 = null;
+                        maxMileage1 = null;
+                        minPrice1 = null;
+                        maxPrice1 = null;
+                        break;
+
+                    case "Powrót":
+                        Console.Clear();
+                        return;
+                }
+
+                // Aktualizacja tabeli po każdej zmianie kryterium
+                UpdateTable();
+            }
         }
-
-        AnsiConsole.Clear(); // Czyść ekran konsoli
-        AnsiConsole.MarkupLine("[green]Dynamiczna tabela wyników wyszukiwania:[/]");
-        AnsiConsole.Render(table);
-    }
-
-    // Pierwsze wywołanie: Wyświetl wszystkie wyniki
-    UpdateTable();
-
-    // Pętla obsługi kryteriów filtrowania
-    while (true)
-    {
-        var choice = AnsiConsole.Prompt(
-            new SelectionPrompt<string>()
-                .Title("Co chcesz zmienić?")
-                .AddChoices("Marka", "Nadwozie", "Kolor", "Minimalny rocznik", "Maksymalny rocznik",
-                            "Minimalny przebieg", "Maksymalny przebieg", 
-                            "Minimalna cena", "Maksymalna cena", "Powrót"));
-
-        switch (choice)
-        {
-            case "Marka":
-                var safeMakes = makes.Select(m => Markup.Escape(m)).ToList();
-                make = AnsiConsole.Prompt(
-                    new SelectionPrompt<string>()
-                        .Title("Wybierz markę:")
-                        .AddChoices(safeMakes)
-                        .PageSize(10)
-                );
-
-                if (make == "Wyczyść filtr") make = null;
-                break;
-
-            case "Nadwozie":
-                var safeBodies = bodies.Select(b => Markup.Escape(b)).ToList();
-                body = AnsiConsole.Prompt(
-                    new SelectionPrompt<string>()
-                        .Title("Wybierz nadwozie:")
-                        .AddChoices(safeBodies)
-                        .PageSize(10)
-                );
-                if (body == "[Wyczyść filtr]") body = null;
-                break;
-
-            case "Kolor":
-                var safeColors = colors.Select(c => Markup.Escape(c)).ToList();
-                color = AnsiConsole.Prompt(
-                    new SelectionPrompt<string>()
-                        .Title("Wybierz kolor:")
-                        .AddChoices(safeColors)
-                        .PageSize(10)
-                );
-                if (color == "[Wyczyść filtr]") color = null;
-                break;
-
-            case "Minimalny rocznik":
-                minYear = AnsiConsole.Ask<int?>("Podaj minimalny rocznik [gray](lub zostaw puste):[/]", null);
-                break;
-
-            case "Maksymalny rocznik":
-                maxYear = AnsiConsole.Ask<int?>("Podaj maksymalny rocznik [gray](lub zostaw puste):[/]", null);
-                break;
-
-            case "Minimalny przebieg":
-                minMileage = AnsiConsole.Ask<decimal?>("Podaj minimalny przebieg [gray](lub zostaw puste):[/]", null);
-                break;
-
-            case "Maksymalny przebieg":
-                maxMileage = AnsiConsole.Ask<decimal?>("Podaj maksymalny przebieg [gray](lub zostaw puste):[/]", null);
-                break;
-
-            case "Minimalna cena":
-                minPrice = AnsiConsole.Ask<decimal?>("Podaj minimalną cenę [gray](lub zostaw puste):[/]", null);
-                break;
-
-            case "Maksymalna cena":
-                maxPrice = AnsiConsole.Ask<decimal?>("Podaj maksymalną cenę [gray](lub zostaw puste):[/]", null);
-                break;
-
-            case "Powrót":
-                Console.Clear();
-                return;
-        }
-
-        // Aktualizacja tabeli po każdej zmianie kryterium
-        UpdateTable();
-    }
-}
-
-
-
-
-
 
         public Table CreateCarTable()
         {
@@ -268,8 +285,16 @@ namespace KCK_APP.Views
             carTable.AddColumn("Nadwozie");
             carTable.AddColumn("Kolor");
             carTable.AddColumn("Cena");
+
             return carTable;
         }
-        
+
+        // Nowa metoda renderująca tabelę
+        private void RenderTable(Table table)
+        {
+            //AnsiConsole.Clear(); // Czyść ekran konsoli
+            AnsiConsole.MarkupLine("[green]Dynamiczna tabela wyników wyszukiwania:[/]");
+            AnsiConsole.Render(table);
+        }
     }
-} 
+}

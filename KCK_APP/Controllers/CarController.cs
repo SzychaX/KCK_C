@@ -47,6 +47,12 @@ namespace KCK_APP.Controllers
         {
             return _databaseService.GetUniqueColors();
         }
+        
+        public List<Car> GetFilteredCarsPaged(string? make, string? body, int? minYear, int? maxYear, decimal? minMileage, decimal? maxMileage, decimal? minPrice, decimal? maxPrice, string? color, int page, int pageSize)
+        {
+            int offset = (page - 1) * pageSize;
+            return _databaseService.GetFilteredCarsPaged(make, body, minYear, maxYear, minMileage, maxMileage, minPrice, maxPrice, color, pageSize, offset);
+        }
 
 
 

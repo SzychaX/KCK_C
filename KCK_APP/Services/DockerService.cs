@@ -38,11 +38,11 @@ namespace KCK_APP.Services
 
                 var response = await client.Containers.CreateContainerAsync(parameters);
                 await client.Containers.StartContainerAsync(response.ID, new ContainerStartParameters());
-                Console.WriteLine("Kontener PostgreSQL uruchomiony!");
+                //Console.WriteLine("Kontener PostgreSQL uruchomiony!");
             }
             else
             {
-                Console.WriteLine("Kontener już działa.");
+                //Console.WriteLine("Kontener już działa.");
             }
         }
     }

@@ -8,7 +8,8 @@ namespace KCK_APP.Services
 {
     public class DatabaseService
     {
-        private const string ConnectionString = "Host=localhost;Port=5434;Username=user;Password=password;Database=car_catalog";
+        private const string ConnectionString =
+            "Host=localhost;Port=5434;Username=user;Password=password;Database=car_catalog";
 
         public void CreateTable()
         {
@@ -35,7 +36,7 @@ namespace KCK_APP.Services
         {
             using var conn = new NpgsqlConnection(ConnectionString);
             conn.Open();
-            
+
             using var cmd = new NpgsqlCommand(@"
                 INSERT INTO Cars (Make, Model, Year, Mileage, Engine, HorsePower, Body, Color, Price)
                 VALUES (@make, @model, @year, @mileage, @engine, @horsePower, @body, @color, @price)", conn);
@@ -62,13 +63,12 @@ namespace KCK_APP.Services
             using var reader = cmd.ExecuteReader();
             while (reader.Read())
             {
-                
                 cars.Add(new Car
                 {
-                    Id = reader.GetInt64(0),        // Zmieniłem na `GetInt64` dla Id, jeśli to BigInt
+                    Id = reader.GetInt64(0), // Zmieniłem na `GetInt64` dla Id, jeśli to BigInt
                     Make = reader.GetString(1),
                     Model = reader.GetString(2),
-                    Year = reader.GetInt32(3),      // Zmieniłem na `GetInt32` dla Year
+                    Year = reader.GetInt32(3), // Zmieniłem na `GetInt32` dla Year
                     Mileage = reader.GetDecimal(4),
                     Engine = reader.GetDecimal(5),
                     HorsePower = reader.GetInt32(6),
@@ -80,7 +80,7 @@ namespace KCK_APP.Services
 
             return cars;
         }
-        
+
         public List<Car> SearchCars(string make, decimal? maxMileage, int? minHorsePower)
         {
             var cars = new List<Car>();
@@ -129,10 +129,10 @@ namespace KCK_APP.Services
             {
                 cars.Add(new Car
                 {
-                    Id = reader.GetInt64(0),        // Zmieniłem na `GetInt64` dla Id, jeśli to BigInt
+                    Id = reader.GetInt64(0), // Zmieniłem na `GetInt64` dla Id, jeśli to BigInt
                     Make = reader.GetString(1),
                     Model = reader.GetString(2),
-                    Year = reader.GetInt32(3),      // Zmieniłem na `GetInt32` dla Year
+                    Year = reader.GetInt32(3), // Zmieniłem na `GetInt32` dla Year
                     Mileage = reader.GetDecimal(4),
                     Engine = reader.GetDecimal(5),
                     HorsePower = reader.GetInt32(6),
@@ -144,14 +144,16 @@ namespace KCK_APP.Services
 
             return cars;
         }
-        public List<Car> GetFilteredCars(string make, string body, int? minYear, int? maxYear, decimal? minMileage, decimal? maxMileage, decimal? minPrice, decimal? maxPrice, string color)
-{
-    var cars = new List<Car>();
 
-    using var connection = new NpgsqlConnection(ConnectionString);
-    connection.Open();
+        public List<Car> GetFilteredCars(string make, string body, int? minYear, int? maxYear, decimal? minMileage,
+            decimal? maxMileage, decimal? minPrice, decimal? maxPrice, string color)
+        {
+            var cars = new List<Car>();
 
-    string query = @"
+            using var connection = new NpgsqlConnection(ConnectionString);
+            connection.Open();
+
+            string query = @"
     SELECT * FROM Cars
     WHERE Make = COALESCE(@make, Make)
       AND Body = COALESCE(@body, Body)
@@ -164,41 +166,45 @@ namespace KCK_APP.Services
       AND Color = COALESCE(@color, Color);
     ";
 
-    using var command = new NpgsqlCommand(query, connection);
+            using var command = new NpgsqlCommand(query, connection);
 
-    command.Parameters.Add("make", NpgsqlTypes.NpgsqlDbType.Text).Value = (object?)make ?? DBNull.Value;
-    command.Parameters.Add("body", NpgsqlTypes.NpgsqlDbType.Text).Value = (object?)body ?? DBNull.Value;
-    command.Parameters.Add("minYear", NpgsqlTypes.NpgsqlDbType.Integer).Value = (object?)minYear ?? DBNull.Value;
-    command.Parameters.Add("maxYear", NpgsqlTypes.NpgsqlDbType.Integer).Value = (object?)maxYear ?? DBNull.Value;
-    command.Parameters.Add("minMileage", NpgsqlTypes.NpgsqlDbType.Numeric).Value = (object?)minMileage ?? DBNull.Value;
-    command.Parameters.Add("maxMileage", NpgsqlTypes.NpgsqlDbType.Numeric).Value = (object?)maxMileage ?? DBNull.Value;
-    command.Parameters.Add("minPrice", NpgsqlTypes.NpgsqlDbType.Numeric).Value = (object?)minPrice ?? DBNull.Value;
-    command.Parameters.Add("maxPrice", NpgsqlTypes.NpgsqlDbType.Numeric).Value = (object?)maxPrice ?? DBNull.Value;
-    command.Parameters.Add("color", NpgsqlTypes.NpgsqlDbType.Text).Value = (object?)color ?? DBNull.Value;
-    
-
-    using var reader = command.ExecuteReader();
-    while (reader.Read())
-    {
-        cars.Add(new Car
-        {
-            Id = reader.GetInt64(0),
-            Make = reader.GetString(1),
-            Model = reader.GetString(2),
-            Year = reader.GetInt32(3),
-            Mileage = reader.GetDecimal(4),
-            Engine = reader.GetDecimal(5),
-            HorsePower = reader.GetInt32(6),
-            Body = reader.GetString(7),
-            Color = reader.GetString(8),
-            Price = reader.GetDecimal(9)
-        });
-    }
-
-    return cars;
-}
+            command.Parameters.Add("make", NpgsqlTypes.NpgsqlDbType.Text).Value = (object?)make ?? DBNull.Value;
+            command.Parameters.Add("body", NpgsqlTypes.NpgsqlDbType.Text).Value = (object?)body ?? DBNull.Value;
+            command.Parameters.Add("minYear", NpgsqlTypes.NpgsqlDbType.Integer).Value =
+                (object?)minYear ?? DBNull.Value;
+            command.Parameters.Add("maxYear", NpgsqlTypes.NpgsqlDbType.Integer).Value =
+                (object?)maxYear ?? DBNull.Value;
+            command.Parameters.Add("minMileage", NpgsqlTypes.NpgsqlDbType.Numeric).Value =
+                (object?)minMileage ?? DBNull.Value;
+            command.Parameters.Add("maxMileage", NpgsqlTypes.NpgsqlDbType.Numeric).Value =
+                (object?)maxMileage ?? DBNull.Value;
+            command.Parameters.Add("minPrice", NpgsqlTypes.NpgsqlDbType.Numeric).Value =
+                (object?)minPrice ?? DBNull.Value;
+            command.Parameters.Add("maxPrice", NpgsqlTypes.NpgsqlDbType.Numeric).Value =
+                (object?)maxPrice ?? DBNull.Value;
+            command.Parameters.Add("color", NpgsqlTypes.NpgsqlDbType.Text).Value = (object?)color ?? DBNull.Value;
 
 
+            using var reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                cars.Add(new Car
+                {
+                    Id = reader.GetInt64(0),
+                    Make = reader.GetString(1),
+                    Model = reader.GetString(2),
+                    Year = reader.GetInt32(3),
+                    Mileage = reader.GetDecimal(4),
+                    Engine = reader.GetDecimal(5),
+                    HorsePower = reader.GetInt32(6),
+                    Body = reader.GetString(7),
+                    Color = reader.GetString(8),
+                    Price = reader.GetDecimal(9)
+                });
+            }
+
+            return cars;
+        }
 
 
         public List<string> GetUniqueMakes()
@@ -206,54 +212,59 @@ namespace KCK_APP.Services
             var makes = new List<string>();
             using var conn = new NpgsqlConnection(ConnectionString);
             conn.Open();
-            
+
             using var cmd = new NpgsqlCommand("SELECT DISTINCT Make From Cars Order by Make", conn);
             using var reader = cmd.ExecuteReader();
             while (reader.Read())
             {
                 makes.Add(reader.GetString(0));
             }
+
             return makes;
         }
-        
+
         public List<string> GetUniqueBodies()
         {
             var bodies = new List<string>();
             using var conn = new NpgsqlConnection(ConnectionString);
             conn.Open();
-            
+
             using var cmd = new NpgsqlCommand("SELECT DISTINCT Body From Cars Order by Body", conn);
             using var reader = cmd.ExecuteReader();
             while (reader.Read())
             {
                 bodies.Add(reader.GetString(0));
             }
+
             return bodies;
         }
-        
+
         public List<string> GetUniqueColors()
         {
             var colors = new List<string>();
             using var conn = new NpgsqlConnection(ConnectionString);
             conn.Open();
-            
+
             using var cmd = new NpgsqlCommand("SELECT DISTINCT Color From Cars Order by Color", conn);
             using var reader = cmd.ExecuteReader();
             while (reader.Read())
             {
                 colors.Add(reader.GetString(0));
             }
+
             return colors;
         }
-        
-        public List<Car> GetFilteredCarsPaged(string? make, string? body, int? minYear, int? maxYear, decimal? minMileage, decimal? maxMileage, decimal? minPrice, decimal? maxPrice, string? color, int limit, int offset)
-{
-    var cars = new List<Car>();
 
-    using var connection = new NpgsqlConnection(ConnectionString);
-    connection.Open();
+        public List<Car> GetFilteredCarsPaged(string? make, string? body, int? minYear, int? maxYear,
+            decimal? minMileage, decimal? maxMileage, decimal? minPrice, decimal? maxPrice, string? color, int limit,
+            int offset)
+        {
+            var cars = new List<Car>();
 
-    string query = @"
+            using var connection = new NpgsqlConnection(ConnectionString);
+            connection.Open();
+
+            string query = @"
     SELECT * FROM Cars
     WHERE (@make IS NULL OR Make = @make)
       AND (@body IS NULL OR Body = @body)
@@ -267,42 +278,125 @@ namespace KCK_APP.Services
     ORDER BY Id
     LIMIT @limit OFFSET @offset";
 
-    using var command = new NpgsqlCommand(query, connection);
+            using var command = new NpgsqlCommand(query, connection);
 
-    command.Parameters.Add("make", NpgsqlTypes.NpgsqlDbType.Text).Value = (object?)make ?? DBNull.Value;
-    command.Parameters.Add("body", NpgsqlTypes.NpgsqlDbType.Text).Value = (object?)body ?? DBNull.Value;
-    command.Parameters.Add("minYear", NpgsqlTypes.NpgsqlDbType.Integer).Value = (object?)minYear ?? DBNull.Value;
-    command.Parameters.Add("maxYear", NpgsqlTypes.NpgsqlDbType.Integer).Value = (object?)maxYear ?? DBNull.Value;
-    command.Parameters.Add("minMileage", NpgsqlTypes.NpgsqlDbType.Numeric).Value = (object?)minMileage ?? DBNull.Value;
-    command.Parameters.Add("maxMileage", NpgsqlTypes.NpgsqlDbType.Numeric).Value = (object?)maxMileage ?? DBNull.Value;
-    command.Parameters.Add("minPrice", NpgsqlTypes.NpgsqlDbType.Numeric).Value = (object?)minPrice ?? DBNull.Value;
-    command.Parameters.Add("maxPrice", NpgsqlTypes.NpgsqlDbType.Numeric).Value = (object?)maxPrice ?? DBNull.Value;
-    command.Parameters.Add("color", NpgsqlTypes.NpgsqlDbType.Text).Value = (object?)color ?? DBNull.Value;
-    command.Parameters.Add("limit", NpgsqlTypes.NpgsqlDbType.Integer).Value = limit;
-    command.Parameters.Add("offset", NpgsqlTypes.NpgsqlDbType.Integer).Value = offset;
+            command.Parameters.Add("make", NpgsqlTypes.NpgsqlDbType.Text).Value = (object?)make ?? DBNull.Value;
+            command.Parameters.Add("body", NpgsqlTypes.NpgsqlDbType.Text).Value = (object?)body ?? DBNull.Value;
+            command.Parameters.Add("minYear", NpgsqlTypes.NpgsqlDbType.Integer).Value =
+                (object?)minYear ?? DBNull.Value;
+            command.Parameters.Add("maxYear", NpgsqlTypes.NpgsqlDbType.Integer).Value =
+                (object?)maxYear ?? DBNull.Value;
+            command.Parameters.Add("minMileage", NpgsqlTypes.NpgsqlDbType.Numeric).Value =
+                (object?)minMileage ?? DBNull.Value;
+            command.Parameters.Add("maxMileage", NpgsqlTypes.NpgsqlDbType.Numeric).Value =
+                (object?)maxMileage ?? DBNull.Value;
+            command.Parameters.Add("minPrice", NpgsqlTypes.NpgsqlDbType.Numeric).Value =
+                (object?)minPrice ?? DBNull.Value;
+            command.Parameters.Add("maxPrice", NpgsqlTypes.NpgsqlDbType.Numeric).Value =
+                (object?)maxPrice ?? DBNull.Value;
+            command.Parameters.Add("color", NpgsqlTypes.NpgsqlDbType.Text).Value = (object?)color ?? DBNull.Value;
+            command.Parameters.Add("limit", NpgsqlTypes.NpgsqlDbType.Integer).Value = limit;
+            command.Parameters.Add("offset", NpgsqlTypes.NpgsqlDbType.Integer).Value = offset;
 
-    using var reader = command.ExecuteReader();
-    while (reader.Read())
-    {
-        cars.Add(new Car
+            using var reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                cars.Add(new Car
+                {
+                    Id = reader.GetInt64(0),
+                    Make = reader.GetString(1),
+                    Model = reader.GetString(2),
+                    Year = reader.GetInt32(3),
+                    Mileage = reader.GetDecimal(4),
+                    Engine = reader.GetDecimal(5),
+                    HorsePower = reader.GetInt32(6),
+                    Body = reader.GetString(7),
+                    Color = reader.GetString(8),
+                    Price = reader.GetDecimal(9)
+                });
+            }
+
+            return cars;
+        }
+
+        public void UpdateCar(Car car)
         {
-            Id = reader.GetInt64(0),
-            Make = reader.GetString(1),
-            Model = reader.GetString(2),
-            Year = reader.GetInt32(3),
-            Mileage = reader.GetDecimal(4),
-            Engine = reader.GetDecimal(5),
-            HorsePower = reader.GetInt32(6),
-            Body = reader.GetString(7),
-            Color = reader.GetString(8),
-            Price = reader.GetDecimal(9)
-        });
-    }
+            using var conn = new NpgsqlConnection(ConnectionString);
+            conn.Open();
 
-    return cars;
+            string query = @"
+        UPDATE Cars
+        SET Make = @make,
+            Model = @model,
+            Year = @year,
+            Mileage = @mileage,
+            Engine = @engine,
+            HorsePower = @horsePower,
+            Body = @body,
+            Color = @color,
+            Price = @price
+        WHERE Id = @id";
+
+            using var cmd = new NpgsqlCommand(query, conn);
+            cmd.Parameters.AddWithValue("make", car.Make);
+            cmd.Parameters.AddWithValue("model", car.Model);
+            cmd.Parameters.AddWithValue("year", car.Year);
+            cmd.Parameters.AddWithValue("mileage", car.Mileage);
+            cmd.Parameters.AddWithValue("engine", car.Engine);
+            cmd.Parameters.AddWithValue("horsePower", car.HorsePower);
+            cmd.Parameters.AddWithValue("body", car.Body);
+            cmd.Parameters.AddWithValue("color", car.Color);
+            cmd.Parameters.AddWithValue("price", car.Price);
+            cmd.Parameters.AddWithValue("id", car.Id);
+
+            cmd.ExecuteNonQuery();
+        }
+
+        public Car? GetCarById(long id)
+        {
+            using var conn = new NpgsqlConnection(ConnectionString);
+            conn.Open();
+
+            string query = "SELECT * FROM Cars WHERE Id = @id";
+
+            using var cmd = new NpgsqlCommand(query, conn);
+            cmd.Parameters.AddWithValue("id", id);
+
+            using var reader = cmd.ExecuteReader();
+            if (reader.Read())
+            {
+                return new Car
+                {
+                    Id = reader.GetInt64(0),
+                    Make = reader.GetString(1),
+                    Model = reader.GetString(2),
+                    Year = reader.GetInt32(3),
+                    Mileage = reader.GetDecimal(4),
+                    Engine = reader.GetDecimal(5),
+                    HorsePower = reader.GetInt32(6),
+                    Body = reader.GetString(7),
+                    Color = reader.GetString(8),
+                    Price = reader.GetDecimal(9)
+                };
+            }
+
+            return null; // Zwracamy null, jeśli samochód o podanym ID nie istnieje
+        }
+
+        public void DeleteCar(long id)
+        {
+            using var conn = new NpgsqlConnection(ConnectionString);
+            conn.Open();
+
+            using var cmd = new NpgsqlCommand("DELETE FROM Cars WHERE Id = @id", conn);
+            cmd.Parameters.AddWithValue("id", id);
+
+            int rowsAffected = cmd.ExecuteNonQuery();
+
+            if (rowsAffected == 0)
+            {
+                throw new Exception($"Nie znaleziono samochodu o ID {id} w bazie danych.");
+            }
+        }
+    }
 }
-
-
-
-    }
-}     

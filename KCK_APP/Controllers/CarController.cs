@@ -3,7 +3,6 @@ using KCK_APP.Services;
 
 namespace KCK_APP.Controllers
 {
-
     public class CarController
     {
         private readonly DatabaseService _databaseService;
@@ -22,15 +21,12 @@ namespace KCK_APP.Controllers
         {
             return _databaseService.GetAllCars();
         }
-        
-        public List<Car> SearchCars(string make, decimal? maxMileage, int? minHorsePower)
+
+        public List<Car> GetFilteredCars(string make, string model, int? minYear, int? maxYear, decimal? minMileage,
+            decimal? maxMileage, decimal? minPrice, decimal? maxPrice, string color)
         {
-            return _databaseService.SearchCars(make, maxMileage, minHorsePower);
-        }
-        
-        public List<Car> GetFilteredCars(string make, string model, int? minYear, int? maxYear, decimal? minMileage, decimal? maxMileage, decimal? minPrice, decimal? maxPrice, string color)
-        {
-            return _databaseService.GetFilteredCars(make, model, minYear, maxYear, minMileage, maxMileage, minPrice, maxPrice, color);
+            return _databaseService.GetFilteredCars(make, model, minYear, maxYear, minMileage, maxMileage, minPrice,
+                maxPrice, color);
         }
 
         public List<string> GetUniqueMakes()
@@ -47,14 +43,30 @@ namespace KCK_APP.Controllers
         {
             return _databaseService.GetUniqueColors();
         }
-        
-        public List<Car> GetFilteredCarsPaged(string? make, string? body, int? minYear, int? maxYear, decimal? minMileage, decimal? maxMileage, decimal? minPrice, decimal? maxPrice, string? color, int page, int pageSize)
+
+        public List<Car> GetFilteredCarsPaged(string? make, string? body, int? minYear, int? maxYear,
+            decimal? minMileage, decimal? maxMileage, decimal? minPrice, decimal? maxPrice, string? color, int page,
+            int pageSize)
         {
             int offset = (page - 1) * pageSize;
-            return _databaseService.GetFilteredCarsPaged(make, body, minYear, maxYear, minMileage, maxMileage, minPrice, maxPrice, color, pageSize, offset);
+            return _databaseService.GetFilteredCarsPaged(make, body, minYear, maxYear, minMileage, maxMileage, minPrice,
+                maxPrice, color, pageSize, offset);
         }
 
+        public Car? GetCarById(int carId)
+        {
+            return _databaseService.GetCarById(carId);
+        }
 
+        // Nowa metoda: Aktualizuj dane samochodu
+        public void UpdateCar(Car car)
+        {
+            _databaseService.UpdateCar(car);
+        }
 
+        public void DeleteCar(long id)
+        {
+            _databaseService.DeleteCar(id);
+        }
     }
 }

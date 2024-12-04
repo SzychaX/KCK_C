@@ -1,7 +1,6 @@
 ﻿using KCK_APP.Controllers;
 using KCK_APP.Services;
 using KCK_APP.Views;
-using Spectre.Console;
 namespace KCK_APP
 {
     class Program

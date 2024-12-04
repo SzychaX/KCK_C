@@ -80,7 +80,7 @@ namespace KCK_APP.Services
 
             return cars;
         }
-
+        //zostawiam to, moze sie przyda na graficzne
         public List<Car> SearchCars(string make, decimal? maxMileage, int? minHorsePower)
         {
             var cars = new List<Car>();
@@ -129,10 +129,10 @@ namespace KCK_APP.Services
             {
                 cars.Add(new Car
                 {
-                    Id = reader.GetInt64(0), // Zmieniłem na `GetInt64` dla Id, jeśli to BigInt
+                    Id = reader.GetInt64(0), 
                     Make = reader.GetString(1),
                     Model = reader.GetString(2),
-                    Year = reader.GetInt32(3), // Zmieniłem na `GetInt32` dla Year
+                    Year = reader.GetInt32(3), 
                     Mileage = reader.GetDecimal(4),
                     Engine = reader.GetDecimal(5),
                     HorsePower = reader.GetInt32(6),

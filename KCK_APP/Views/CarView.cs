@@ -37,7 +37,7 @@ namespace KCK_APP.Views
                 // Wyświetlenie menu z wyśrodkowanymi opcjami
                 var choice = AnsiConsole.Prompt(
                     new SelectionPrompt<string>()
-                        .Title(CenterText("[Cyan2 bold]MENU[/]", consoleWidth))
+                        .Title(CenterText("[yellow bold]MENU[/]", consoleWidth))
                         .AddChoices(new[]
                         {
                             CenterTextForChoices("[green]Szukaj samochodu[/]", consoleWidth),
@@ -226,7 +226,7 @@ namespace KCK_APP.Views
                 // Nawigacja w menu wyszukiwania i stronicowania
                 var choice = AnsiConsole.Prompt(
                     new SelectionPrompt<string>()
-                        .Title(CenterText("[cyan1]WYSZUKIWANIE[/]", consoleWidth))
+                        .Title(CenterText("[blue]WYSZUKIWANIE[/]", consoleWidth))
                         .AddChoices(
                             CenterTextForChoices("[green]Zmiana kryteriów[/]", consoleWidth),
                             CenterTextForChoices("[yellow]Poprzednia strona[/]", consoleWidth),

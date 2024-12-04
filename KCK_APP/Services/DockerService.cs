@@ -1,7 +1,5 @@
 ﻿using Docker.DotNet;
 using Docker.DotNet.Models;
-using System;
-using System.Threading.Tasks;
 
 namespace KCK_APP.Services
 {

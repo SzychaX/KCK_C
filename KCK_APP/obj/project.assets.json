@@ -434,24 +434,28 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Kuba\\.nuget\\packages\\": {}
+    "C:\\Users\\Omen\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Kuba\\Desktop\\KCK_C\\KCK_APP\\KCK_APP\\KCK_APP.csproj",
+      "projectUniqueName": "C:\\Users\\Omen\\Desktop\\KCK_C\\KCK_APP\\KCK_APP.csproj",
       "projectName": "KCK_APP",
-      "projectPath": "C:\\Users\\Kuba\\Desktop\\KCK_C\\KCK_APP\\KCK_APP\\KCK_APP.csproj",
-      "packagesPath": "C:\\Users\\Kuba\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Kuba\\Desktop\\KCK_C\\KCK_APP\\KCK_APP\\obj\\",
+      "projectPath": "C:\\Users\\Omen\\Desktop\\KCK_C\\KCK_APP\\KCK_APP.csproj",
+      "packagesPath": "C:\\Users\\Omen\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Omen\\Desktop\\KCK_C\\KCK_APP\\obj\\",
       "projectStyle": "PackageReference",
+      "UsingMicrosoftNETSdk": false,
       "configFilePaths": [
-        "C:\\Users\\Kuba\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\Omen\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {

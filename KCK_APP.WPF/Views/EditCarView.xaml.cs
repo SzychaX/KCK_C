@@ -31,31 +31,41 @@ namespace KCK_APP.WPF.Views
             BodyTextBox.Text = _car.Body;
             ColorTextBox.Text = _car.Color;
             PriceTextBox.Text = _car.Price.ToString();
+            ImageUrlTextBox.Text = _car.ImageUrl;
         }
 
         private void SaveCar_Click(object sender, RoutedEventArgs e)
         {
-            _car.Make = MakeTextBox.Text;
-            _car.Model = ModelTextBox.Text;
-            _car.Year = int.Parse(YearTextBox.Text);
-            _car.Mileage = decimal.Parse(MileageTextBox.Text);
-            _car.Engine = decimal.Parse(EngineTextBox.Text);
-            _car.HorsePower = int.Parse(HorsePowerTextBox.Text);
-            _car.Body = BodyTextBox.Text;
-            _car.Color = ColorTextBox.Text;
-            _car.Price = decimal.Parse(PriceTextBox.Text);
+            try
+            {
+                _car.Make = MakeTextBox.Text;
+                _car.Model = ModelTextBox.Text;
+                _car.Year = int.Parse(YearTextBox.Text);
+                _car.Mileage = decimal.Parse(MileageTextBox.Text);
+                _car.Engine = decimal.Parse(EngineTextBox.Text);
+                _car.HorsePower = int.Parse(HorsePowerTextBox.Text);
+                _car.Body = BodyTextBox.Text;
+                _car.Color = ColorTextBox.Text;
+                _car.Price = decimal.Parse(PriceTextBox.Text);
+                _car.ImageUrl = ImageUrlTextBox.Text;
 
-            _carController.UpdateCar(_car);
+                _carController.UpdateCar(_car);
+                MessageBox.Show("Samochód został zaktualizowany!");
 
-            // Wracamy do widoku zarządzania samochodami
-            var mainWindow = (MainWindow)Window.GetWindow(this);
-            mainWindow.MainContent.Content = new ManageCarsView();
+                // Powrót do ManageCarsView
+                MainWindow mainWindow = (MainWindow)Window.GetWindow(this);
+                mainWindow.MainContent.Content = new ManageCarsView();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Wystąpił błąd podczas zapisywania danych: {ex.Message}");
+            }
         }
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
-            // Wracamy do widoku zarządzania samochodami
-            var mainWindow = (MainWindow)Window.GetWindow(this);
+            // Powrót do ManageCarsView
+            MainWindow mainWindow = (MainWindow)Window.GetWindow(this);
             mainWindow.MainContent.Content = new ManageCarsView();
         }
     }

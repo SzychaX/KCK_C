@@ -25,6 +25,7 @@
       <XamlRuntime>Wpf</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Views\CarDetailsView.xaml" />
     <Page Include="Views\DeleteCarView.xaml" />
     <Page Include="Views\EditCarView.xaml" />
     <Page Include="Views\LoginView.xaml" />

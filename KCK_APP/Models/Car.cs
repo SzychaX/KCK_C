@@ -2,8 +2,7 @@
 
 public class Car
 {
-    public long
-        Id { get; set; }
+    public long Id { get; set; }
     public string Make { get; set; }
     public string Model { get; set; }
     public int Year { get; set; }
@@ -13,4 +12,5 @@ public class Car
     public string Body { get; set; }
     public string Color { get; set; }
     public decimal Price { get; set; }
+    public string ImageUrl { get; set; }
 }

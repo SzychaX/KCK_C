@@ -4,7 +4,7 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:views="clr-namespace:KCK_APP.WPF.Views"
         Title="KCK_APP"
-        Height="700" Width="1400">
+        Height="750" Width="1400">
     <Grid>
         <!-- Menu nawigacyjne -->
         <DockPanel>

@@ -60,5 +60,14 @@ namespace KCK_APP.WPF.Views
                 _cars.Add(car);
             }
         }
+
+        private void CarsListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (CarsListView.SelectedItem is Car selectedCar)
+            {
+                MainWindow mainWindow = (MainWindow)Window.GetWindow(this);
+                mainWindow.MainContent.Content = new CarDetailsView(selectedCar);
+            }
+        }
     }
 }

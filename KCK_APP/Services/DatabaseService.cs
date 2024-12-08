@@ -17,20 +17,22 @@ namespace KCK_APP.Services
             conn.Open();
 
             using var cmd = new NpgsqlCommand(@"
-                CREATE TABLE IF NOT EXISTS Cars (
-                    Id SERIAL PRIMARY KEY,
-                    Make VARCHAR(50),
-                    Model VARCHAR(50),
-                    Year INTEGER,
-                    Mileage DECIMAL,
-                    Engine DECIMAL,
-                    HorsePower INTEGER,
-                    Body VARCHAR(50),
-                    COLOR VARCHAR(50),
-                    Price DECIMAL
-                );", conn);
+        CREATE TABLE IF NOT EXISTS Cars (
+            Id SERIAL PRIMARY KEY,
+            Make VARCHAR(50),
+            Model VARCHAR(50),
+            Year INTEGER,
+            Mileage DECIMAL,
+            Engine DECIMAL,
+            HorsePower INTEGER,
+            Body VARCHAR(50),
+            Color VARCHAR(50),
+            Price DECIMAL,
+            ImageUrl VARCHAR(255), -- Nowa kolumna
+        );", conn);
             cmd.ExecuteNonQuery();
         }
+
 
         public void AddCarToDatabase(Car car)
         {
@@ -38,8 +40,9 @@ namespace KCK_APP.Services
             conn.Open();
 
             using var cmd = new NpgsqlCommand(@"
-                INSERT INTO Cars (Make, Model, Year, Mileage, Engine, HorsePower, Body, Color, Price)
-                VALUES (@make, @model, @year, @mileage, @engine, @horsePower, @body, @color, @price)", conn);
+        INSERT INTO Cars (Make, Model, Year, Mileage, Engine, HorsePower, Body, Color, Price, ImageUrl)
+        VALUES (@make, @model, @year, @mileage, @engine, @horsePower, @body, @color, @price, @imageUrl)", conn);
+
             cmd.Parameters.AddWithValue("make", car.Make);
             cmd.Parameters.AddWithValue("model", car.Model);
             cmd.Parameters.AddWithValue("year", car.Year);
@@ -49,8 +52,10 @@ namespace KCK_APP.Services
             cmd.Parameters.AddWithValue("body", car.Body);
             cmd.Parameters.AddWithValue("color", car.Color);
             cmd.Parameters.AddWithValue("price", car.Price);
+            cmd.Parameters.AddWithValue("imageUrl", car.ImageUrl ?? (object)DBNull.Value); // Nowe pole
             cmd.ExecuteNonQuery();
         }
+
 
         public List<Car> GetAllCars()
         {
@@ -65,21 +70,23 @@ namespace KCK_APP.Services
             {
                 cars.Add(new Car
                 {
-                    Id = reader.GetInt64(0), // Zmieniłem na `GetInt64` dla Id, jeśli to BigInt
+                    Id = reader.GetInt64(0),
                     Make = reader.GetString(1),
                     Model = reader.GetString(2),
-                    Year = reader.GetInt32(3), // Zmieniłem na `GetInt32` dla Year
+                    Year = reader.GetInt32(3),
                     Mileage = reader.GetDecimal(4),
                     Engine = reader.GetDecimal(5),
                     HorsePower = reader.GetInt32(6),
                     Body = reader.GetString(7),
                     Color = reader.GetString(8),
-                    Price = reader.GetDecimal(9)
+                    Price = reader.GetDecimal(9),
+                    ImageUrl = reader.IsDBNull(10) ? null : reader.GetString(10) // Obsługa kolumny ImageUrl
                 });
             }
 
             return cars;
         }
+
 
         public List<Car> SearchCars(string make, decimal? maxMileage, int? minHorsePower)
         {
@@ -334,7 +341,8 @@ namespace KCK_APP.Services
             HorsePower = @horsePower,
             Body = @body,
             Color = @color,
-            Price = @price
+            Price = @price,
+            ImageUrl = @imageUrl
         WHERE Id = @id";
 
             using var cmd = new NpgsqlCommand(query, conn);
@@ -348,6 +356,7 @@ namespace KCK_APP.Services
             cmd.Parameters.AddWithValue("color", car.Color);
             cmd.Parameters.AddWithValue("price", car.Price);
             cmd.Parameters.AddWithValue("id", car.Id);
+            cmd.Parameters.AddWithValue("imageUrl", car.ImageUrl);
 
             cmd.ExecuteNonQuery();
         }

@@ -15,6 +15,8 @@
             <TextBox x:Name="BodyTextBox" materialDesign:HintAssist.Hint="Rodzaj Nadwozia" Margin="10" />
             <TextBox x:Name="ColorTextBox" materialDesign:HintAssist.Hint="Kolor" Margin="10" />
             <TextBox x:Name="PriceTextBox" materialDesign:HintAssist.Hint="Cena (PLN)" Margin="10" />
+            <TextBox x:Name="ImageUrlTextBox" materialDesign:HintAssist.Hint="URL Obrazka" Margin="10" />
+
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
                 <Button Content="Dodaj" Width="100" Margin="5" Click="AddCar_Click" />

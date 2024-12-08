@@ -32,7 +32,8 @@ namespace KCK_APP.WPF.Views
                     HorsePower = int.Parse(HorsePowerTextBox.Text),
                     Body = BodyTextBox.Text,
                     Color = ColorTextBox.Text,
-                    Price = decimal.Parse(PriceTextBox.Text)
+                    Price = decimal.Parse(PriceTextBox.Text),
+                    ImageUrl = ImageUrlTextBox.Text // Nowe pole
                 };
 
                 // Dodanie samochodu do bazy danych

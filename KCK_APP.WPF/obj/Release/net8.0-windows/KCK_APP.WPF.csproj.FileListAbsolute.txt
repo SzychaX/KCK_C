@@ -48,3 +48,5 @@ C:\Users\Kuba\Desktop\KCK_C\KCK_APP\KCK_APP.WPF\obj\Release\net8.0-windows\Views
 C:\Users\Kuba\Desktop\KCK_C\KCK_APP\KCK_APP.WPF\obj\Release\net8.0-windows\Views\SearchCarsView.g.cs
 C:\Users\Kuba\Desktop\KCK_C\KCK_APP\KCK_APP.WPF\obj\Release\net8.0-windows\Views\LoginView.g.cs
 C:\Users\Kuba\Desktop\KCK_C\KCK_APP\KCK_APP.WPF\obj\Release\net8.0-windows\Views\LoginView.baml
+C:\Users\Kuba\Desktop\KCK_C\KCK_APP\KCK_APP.WPF\obj\Release\net8.0-windows\Views\CarDetailsView.g.cs
+C:\Users\Kuba\Desktop\KCK_C\KCK_APP\KCK_APP.WPF\obj\Release\net8.0-windows\Views\CarDetailsView.baml

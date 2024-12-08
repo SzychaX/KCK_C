@@ -6,22 +6,24 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d"
              d:DesignHeight="500" d:DesignWidth="400">
-    <Grid>
-        <StackPanel Margin="20">
+    <Grid Margin="20">
+        <StackPanel>
             <TextBlock Text="Edytuj Samochód" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" Margin="10" />
-            <TextBox x:Name="MakeTextBox" Margin="5" />
-            <TextBox x:Name="ModelTextBox" Margin="5" />
-            <TextBox x:Name="YearTextBox" Margin="5" />
-            <TextBox x:Name="MileageTextBox" Margin="5" />
-            <TextBox x:Name="EngineTextBox" Margin="5" />
-            <TextBox x:Name="HorsePowerTextBox" Margin="5" />
-            <TextBox x:Name="BodyTextBox" Margin="5" />
-            <TextBox x:Name="ColorTextBox" Margin="5" />
-            <TextBox x:Name="PriceTextBox" Margin="5" />
+            
+            <TextBox x:Name="MakeTextBox" materialDesign:HintAssist.Hint="Marka" Margin="5" />
+            <TextBox x:Name="ModelTextBox" materialDesign:HintAssist.Hint="Model" Margin="5" />
+            <TextBox x:Name="YearTextBox" materialDesign:HintAssist.Hint="Rok" Margin="5" />
+            <TextBox x:Name="MileageTextBox" materialDesign:HintAssist.Hint="Przebieg (km)" Margin="5" />
+            <TextBox x:Name="EngineTextBox" materialDesign:HintAssist.Hint="Silnik (cm³)" Margin="5" />
+            <TextBox x:Name="HorsePowerTextBox" materialDesign:HintAssist.Hint="Moc (KM)" Margin="5" />
+            <TextBox x:Name="BodyTextBox" materialDesign:HintAssist.Hint="Rodzaj Nadwozia" Margin="5" />
+            <TextBox x:Name="ColorTextBox" materialDesign:HintAssist.Hint="Kolor" Margin="5" />
+            <TextBox x:Name="PriceTextBox" materialDesign:HintAssist.Hint="Cena (PLN)" Margin="5" />
+            <TextBox x:Name="ImageUrlTextBox" materialDesign:HintAssist.Hint="URL Zdjęcia" Margin="5" />
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
-                <Button Content="Zapisz" Width="100" Margin="5" Click="SaveCar_Click" />
-                <Button Content="Anuluj" Width="100" Margin="5" Click="Cancel_Click" />
+                <Button Content="Zapisz" Click="SaveCar_Click" Width="100" Margin="5" />
+                <Button Content="Anuluj" Click="Cancel_Click" Width="100" Margin="5" />
             </StackPanel>
         </StackPanel>
     </Grid>

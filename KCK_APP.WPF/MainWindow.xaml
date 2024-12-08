@@ -1,14 +1,21 @@
 ﻿<Window x:Class="KCK_APP.WPF.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="KOMIS" Height="450" Width="800">
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:views="clr-namespace:KCK_APP.WPF.Views"
+        Title="KCK_APP"
+        Height="700" Width="1400">
     <Grid>
-        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-            <TextBlock Text="KOMIS - Menu Główne" FontSize="30" HorizontalAlignment="Center" Margin="20"/>
-            <Button Content="Zarządzanie samochodami" Click="ManageCars_Click" Margin="10" Padding="5"/>
-            <Button Content="Szukaj samochodów" Click="SearchCars_Click" Margin="10" Padding="5"/>
-            <Button Content="Wyjście" Click="Exit_Click" Margin="10" Padding="5"/>
-        </StackPanel>
+        <!-- Menu nawigacyjne -->
+        <DockPanel>
+            <StackPanel DockPanel.Dock="Left" Width="200" Background="LightGray">
+                <TextBlock Text="Menu" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="10" />
+                <Button Content="Przeglądaj Auta" Click="ShowSearchCarsView" Margin="10" Width="150" />
+                <Button Content="Zarządzaj Autami" Click="ShowLoginView" Margin="10" Width="150" />
+            </StackPanel>
+
+            <!-- Główna zawartość -->
+            <ContentControl x:Name="MainContent" Margin="10" />
+        </DockPanel>
     </Grid>
 </Window>
-

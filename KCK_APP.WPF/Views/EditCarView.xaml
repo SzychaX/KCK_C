@@ -1,0 +1,28 @@
+﻿<UserControl x:Class="KCK_APP.WPF.Views.EditCarView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d"
+             d:DesignHeight="500" d:DesignWidth="400">
+    <Grid>
+        <StackPanel Margin="20">
+            <TextBlock Text="Edytuj Samochód" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" Margin="10" />
+            <TextBox x:Name="MakeTextBox" Margin="5" />
+            <TextBox x:Name="ModelTextBox" Margin="5" />
+            <TextBox x:Name="YearTextBox" Margin="5" />
+            <TextBox x:Name="MileageTextBox" Margin="5" />
+            <TextBox x:Name="EngineTextBox" Margin="5" />
+            <TextBox x:Name="HorsePowerTextBox" Margin="5" />
+            <TextBox x:Name="BodyTextBox" Margin="5" />
+            <TextBox x:Name="ColorTextBox" Margin="5" />
+            <TextBox x:Name="PriceTextBox" Margin="5" />
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
+                <Button Content="Zapisz" Width="100" Margin="5" Click="SaveCar_Click" />
+                <Button Content="Anuluj" Width="100" Margin="5" Click="Cancel_Click" />
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</UserControl>

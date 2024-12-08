@@ -1,13 +1,5 @@
-﻿using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+﻿using System.Windows;
+using KCK_APP.WPF.Views;
 
 namespace KCK_APP.WPF
 {
@@ -16,23 +8,22 @@ namespace KCK_APP.WPF
         public MainWindow()
         {
             InitializeComponent();
+            ShowSearchCarsView(null, null); // Domyślny widok
         }
 
-        private void ManageCars_Click(object sender, RoutedEventArgs e)
+        private void ShowSearchCarsView(object sender, RoutedEventArgs e)
         {
-            var manageCarsWindow = new ManageCarsWindow();
-            manageCarsWindow.Show();
+            MainContent.Content = new SearchCarsView();
         }
 
-        private void SearchCars_Click(object sender, RoutedEventArgs e)
+        private void ShowLoginView(object sender, RoutedEventArgs e)
         {
-            var searchCarsWindow = new SearchCarsWindow();
-            searchCarsWindow.Show();
+            MainContent.Content = new LoginView(this);
         }
 
-        private void Exit_Click(object sender, RoutedEventArgs e)
+        public void ShowManageCarsView()
         {
-            Application.Current.Shutdown();
+            MainContent.Content = new ManageCarsView();
         }
     }
 }

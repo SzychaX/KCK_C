@@ -19,11 +19,20 @@
 
   <ItemGroup>
     <!-- Ręczne dodawanie plików XAML, jeśli wyłączono automatyczne dodawanie -->
-    <Page Include="AddCarWindow.xaml" />
-    <Page Include="DeleteCarWindow.xaml" />
-    <Page Include="EditCarWindow.xaml" />
     <Page Include="MainWindow.xaml" />
-    <Page Include="ManageCarsWindow.xaml" />
-    <Page Include="SearchCarsWindow.xaml" />
+    <Page Include="Views\AddCarView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <XamlRuntime>Wpf</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\DeleteCarView.xaml" />
+    <Page Include="Views\EditCarView.xaml" />
+    <Page Include="Views\LoginView.xaml" />
+    <Page Include="Views\ManageCarsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <XamlRuntime>Wpf</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\SearchCarsView.xaml" />
   </ItemGroup>
 </Project>

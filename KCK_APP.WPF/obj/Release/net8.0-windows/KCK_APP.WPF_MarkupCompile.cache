@@ -10,11 +10,11 @@ none
 false
 TRACE;RELEASE;NET;NET8_0;NETCOREAPP
 C:\Users\Kuba\Desktop\KCK_C\KCK_APP\KCK_APP.WPF\App.xaml
-6-80634173
+71799655236
 
-81050225611
+92038841993
 208-523668768
-AddCarWindow.xaml;DeleteCarWindow.xaml;EditCarWindow.xaml;MainWindow.xaml;ManageCarsWindow.xaml;SearchCarsWindow.xaml;
+MainWindow.xaml;Views\AddCarView.xaml;Views\DeleteCarView.xaml;Views\EditCarView.xaml;Views\LoginView.xaml;Views\ManageCarsView.xaml;Views\SearchCarsView.xaml;
 
 False
 

@@ -1,0 +1,14 @@
+﻿<Window x:Class="KCK_APP.WPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="KOMIS" Height="450" Width="800">
+    <Grid>
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+            <TextBlock Text="KOMIS - Menu Główne" FontSize="30" HorizontalAlignment="Center" Margin="20"/>
+            <Button Content="Zarządzanie samochodami" Click="ManageCars_Click" Margin="10" Padding="5"/>
+            <Button Content="Szukaj samochodów" Click="SearchCars_Click" Margin="10" Padding="5"/>
+            <Button Content="Wyjście" Click="Exit_Click" Margin="10" Padding="5"/>
+        </StackPanel>
+    </Grid>
+</Window>
+

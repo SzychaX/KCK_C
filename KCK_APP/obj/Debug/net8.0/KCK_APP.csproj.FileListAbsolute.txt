@@ -15,10 +15,10 @@ C:\Users\Kuba\Desktop\KCK_C\KCK_APP\KCK_APP\obj\Debug\net8.0\KCK_APP.GeneratedMS
 C:\Users\Kuba\Desktop\KCK_C\KCK_APP\KCK_APP\obj\Debug\net8.0\KCK_APP.AssemblyInfoInputs.cache
 C:\Users\Kuba\Desktop\KCK_C\KCK_APP\KCK_APP\obj\Debug\net8.0\KCK_APP.AssemblyInfo.cs
 C:\Users\Kuba\Desktop\KCK_C\KCK_APP\KCK_APP\obj\Debug\net8.0\KCK_APP.csproj.CoreCompileInputs.cache
+C:\Users\Kuba\Desktop\KCK_C\KCK_APP\KCK_APP\obj\Debug\net8.0\KCK_APP.sourcelink.json
 C:\Users\Kuba\Desktop\KCK_C\KCK_APP\KCK_APP\obj\Debug\net8.0\KCK_APP.csproj.Up2Date
 C:\Users\Kuba\Desktop\KCK_C\KCK_APP\KCK_APP\obj\Debug\net8.0\KCK_APP.dll
 C:\Users\Kuba\Desktop\KCK_C\KCK_APP\KCK_APP\obj\Debug\net8.0\refint\KCK_APP.dll
 C:\Users\Kuba\Desktop\KCK_C\KCK_APP\KCK_APP\obj\Debug\net8.0\KCK_APP.pdb
 C:\Users\Kuba\Desktop\KCK_C\KCK_APP\KCK_APP\obj\Debug\net8.0\KCK_APP.genruntimeconfig.cache
 C:\Users\Kuba\Desktop\KCK_C\KCK_APP\KCK_APP\obj\Debug\net8.0\ref\KCK_APP.dll
-C:\Users\Kuba\Desktop\KCK_C\KCK_APP\KCK_APP\obj\Debug\net8.0\KCK_APP.sourcelink.json

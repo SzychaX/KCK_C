@@ -53,7 +53,7 @@ namespace KCK_APP.Controllers
                 maxPrice, color, pageSize, offset);
         }
 
-        public Car? GetCarById(int carId)
+        public Car? GetCarById(long carId)
         {
             return _databaseService.GetCarById(carId);
         }

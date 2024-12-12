@@ -7,7 +7,7 @@
             <TextBlock Text="Zarządzaj Samochodami" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" Margin="10" />
             
             <!-- Lista samochodów -->
-            <ListView x:Name="CarsListView" Height="400" Width="1300" Margin="5" SelectionMode="Single"
+            <ListView x:Name="CarsListView" Height="500" Width="1300" Margin="5" SelectionMode="Single"
                       SelectionChanged="CarsListView_SelectionChanged">
                 <ListView.ItemContainerStyle>
                     <Style TargetType="ListViewItem">

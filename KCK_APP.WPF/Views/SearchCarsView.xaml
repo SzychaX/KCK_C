@@ -77,12 +77,13 @@
 
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn Header="Id" DisplayMemberBinding="{Binding Id}" Width="130" />
-                        <GridViewColumn Header="Marka" DisplayMemberBinding="{Binding Make}" Width="130" />
-                        <GridViewColumn Header="Model" DisplayMemberBinding="{Binding Model}" Width="130" />
-                        <GridViewColumn Header="Rocznik" DisplayMemberBinding="{Binding Year}" Width="130" />
-                        <GridViewColumn Header="Przebieg (km)" DisplayMemberBinding="{Binding Mileage}" Width="130" />
-                        <GridViewColumn Header="Cena (PLN)" DisplayMemberBinding="{Binding Price}" Width="130" />
+                        <GridViewColumn Header="Id" DisplayMemberBinding="{Binding Id, StringFormat='      {0}'}" Width="200" />
+                        <GridViewColumn Header="Marka" DisplayMemberBinding="{Binding Make, StringFormat='      {0}'}" Width="200" />
+                        <GridViewColumn Header="Model" DisplayMemberBinding="{Binding Model, StringFormat='      {0}'}" Width="200" />
+                        <GridViewColumn Header="Rocznik" DisplayMemberBinding="{Binding Year, StringFormat='      {0}'}" Width="200" />
+                        <GridViewColumn Header="Przebieg (km)" DisplayMemberBinding="{Binding Mileage, StringFormat='      {0}'}" Width="200" />
+                        <GridViewColumn Header="Cena (PLN)" DisplayMemberBinding="{Binding Price, StringFormat='      {0}'}" Width="200" />
+
                     </GridView>
                 </ListView.View>
             </ListView>

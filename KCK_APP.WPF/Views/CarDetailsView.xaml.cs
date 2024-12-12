@@ -17,17 +17,20 @@ namespace KCK_APP.WPF.Views
 
         private void LoadCarDetails()
         {
+            // Ładowanie obrazu samochodu
             CarImage.Source = new System.Windows.Media.Imaging.BitmapImage(new System.Uri(_car.ImageUrl));
-            CarDescription.Text = 
-                $"Marka: {_car.Make}\n" +
-                $"Model: {_car.Model}\n" +
-                $"Rok: {_car.Year}\n" +
-                $"Przebieg: {_car.Mileage} km\n" +
-                $"Cena: {_car.Price} PLN\n" +
-                $"Pojemność silnika: {_car.Engine} cm³\n" +
-                $"Moc: {_car.HorsePower} KM\n" +
-                $"Rodzaj nadwozia: {_car.Body}\n" +
-                $"Kolor: {_car.Color}\n";
+            
+            // Formatowanie opisu samochodu, w tym przypadku użycie HTML (np. pogrubienie)
+            CarDescription.Inlines.Clear();
+            CarDescription.Inlines.Add(new System.Windows.Documents.Bold(new System.Windows.Documents.Run($"Marka: {_car.Make}\n")));
+            CarDescription.Inlines.Add(new System.Windows.Documents.Bold(new System.Windows.Documents.Run($"Model: {_car.Model}\n")));
+            CarDescription.Inlines.Add(new System.Windows.Documents.Bold(new System.Windows.Documents.Run($"Rok: {_car.Year}\n")));
+            CarDescription.Inlines.Add(new System.Windows.Documents.Bold(new System.Windows.Documents.Run($"Przebieg: {_car.Mileage} km\n")));
+            CarDescription.Inlines.Add(new System.Windows.Documents.Bold(new System.Windows.Documents.Run($"Cena: {_car.Price} PLN\n")));
+            CarDescription.Inlines.Add(new System.Windows.Documents.Bold(new System.Windows.Documents.Run($"Pojemność silnika: {_car.Engine} cm³\n")));
+            CarDescription.Inlines.Add(new System.Windows.Documents.Bold(new System.Windows.Documents.Run($"Moc: {_car.HorsePower} KM\n")));
+            CarDescription.Inlines.Add(new System.Windows.Documents.Bold(new System.Windows.Documents.Run($"Rodzaj nadwozia: {_car.Body}\n")));
+            CarDescription.Inlines.Add(new System.Windows.Documents.Bold(new System.Windows.Documents.Run($"Kolor: {_car.Color}\n")));
         }
 
         private void BackButton_Click(object sender, RoutedEventArgs e)

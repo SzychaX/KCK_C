@@ -47,7 +47,8 @@ namespace KCK_APP.WPF.Views
             // Pobierz wybrany samochód
             if (CarsListView.SelectedItem is Car selectedCar)
             {
-                var confirm = MessageBox.Show($"Czy na pewno chcesz usunąć {selectedCar.Make} {selectedCar.Model}?", "Potwierdzenie", MessageBoxButton.YesNo);
+                var confirm = MessageBox.Show($"Czy na pewno chcesz usunąć {selectedCar.Make} {selectedCar.Model}?",
+                    "Potwierdzenie", MessageBoxButton.YesNo);
                 if (confirm == MessageBoxResult.Yes)
                 {
                     _carController.DeleteCar(selectedCar.Id);
@@ -66,6 +67,36 @@ namespace KCK_APP.WPF.Views
             {
                 // Debugowanie zaznaczonego auta
                 System.Diagnostics.Debug.WriteLine($"Zaznaczono: {selectedCar.Make} {selectedCar.Model}");
+            }
+        }
+
+        private void SearchCarById_Click(object sender, RoutedEventArgs e)
+        {
+            var carIdText = CarIdSearchBox.Text;
+
+            if (string.IsNullOrEmpty(carIdText))
+            {
+                // Jeśli pole ID jest puste, załaduj wszystkie samochody
+                LoadCars();
+            }
+            else
+            {
+                if (long.TryParse(carIdText, out long carId))
+                {
+                    var car = _carController.GetCarById(carId);
+                    if (car != null)
+                    {
+                        CarsListView.ItemsSource = new[] { car };
+                    }
+                    else
+                    {
+                        MessageBox.Show("Nie znaleziono samochodu o podanym ID.");
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Wprowadź poprawne ID samochodu.");
+                }
             }
         }
     }

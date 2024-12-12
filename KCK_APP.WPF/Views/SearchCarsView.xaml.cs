@@ -30,11 +30,12 @@ namespace KCK_APP.WPF.Views
         {
             var filteredCars = _carController.GetAllCars().AsQueryable();
 
+            // Zamiana tekstów na małe litery do porównania
             if (!string.IsNullOrWhiteSpace(MakeTextBox.Text))
-                filteredCars = filteredCars.Where(c => c.Make.Contains(MakeTextBox.Text));
+                filteredCars = filteredCars.Where(c => c.Make.ToLower().Contains(MakeTextBox.Text.ToLower()));
 
             if (!string.IsNullOrWhiteSpace(ModelTextBox.Text))
-                filteredCars = filteredCars.Where(c => c.Model.Contains(ModelTextBox.Text));
+                filteredCars = filteredCars.Where(c => c.Model.ToLower().Contains(ModelTextBox.Text.ToLower()));
 
             if (int.TryParse(MinYearTextBox.Text, out int minYear))
                 filteredCars = filteredCars.Where(c => c.Year >= minYear);

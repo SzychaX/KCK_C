@@ -34,6 +34,11 @@ namespace KCK_APP.Controllers
             return _databaseService.GetUniqueMakes();
         }
 
+        public List<string> GetUniqueModels()
+        {
+            return _databaseService.GetUniqueModels();
+        }
+
         public List<string> GetUniqueBodies()
         {
             return _databaseService.GetUniqueBodies();
@@ -68,5 +73,15 @@ namespace KCK_APP.Controllers
         {
             _databaseService.DeleteCar(id);
         }
+        
+        public List<string> GetModelsByMake(string make)
+        {
+            return _databaseService.GetAllCars()
+                .Where(c => c.Make == make)
+                .Select(c => c.Model)
+                .Distinct()
+                .ToList();
+        }
+
     }
 }

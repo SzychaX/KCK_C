@@ -18,12 +18,66 @@ namespace KCK_APP.WPF.Views
             InitializeComponent();
             _carController = new CarController(new DatabaseService());
             LoadCars();
+            LoadFilterOptions();
+        }
+
+        private void UpdateModelComboBox()
+        {
+            // Pobierz wybraną markę
+            string selectedMake = MakeComboBox.SelectedItem as string;
+
+            // Jeśli marka jest pusta, załaduj wszystkie modele
+            var models = string.IsNullOrEmpty(selectedMake)
+                ? _carController.GetUniqueModels() 
+                : _carController.GetModelsByMake(selectedMake);
+
+            // Dodaj pustą opcję na początek listy
+            models.Insert(0, "");
+            ModelComboBox.ItemsSource = models;
+            ModelComboBox.SelectedIndex = 0; // Ustaw brak wybranego modelu
+        }
+
+        private void MakeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            UpdateModelComboBox();
+        }
+
+        private void LoadFilterOptions()
+        {
+            // Załaduj wszystkie dostępne marki
+            var makes = _carController.GetUniqueMakes();
+            makes.Insert(0, ""); // Dodaj pustą opcję na początek
+            MakeComboBox.ItemsSource = makes;
+            MakeComboBox.SelectedIndex = 0;
+
+            // Załaduj wszystkie modele
+            var models = _carController.GetUniqueModels();
+            models.Insert(0, ""); // Dodaj pustą opcję na początek
+            ModelComboBox.ItemsSource = models;
+            ModelComboBox.SelectedIndex = 0;
         }
 
         private void LoadCars()
         {
+            // Załaduj wszystkie samochody do listy
             _cars = new ObservableCollection<Car>(_carController.GetAllCars());
             CarsListView.ItemsSource = _cars;
+        }
+
+        private void ClearFilters_Click(object sender, RoutedEventArgs e)
+        {
+            // Resetuj filtry
+            MakeComboBox.SelectedIndex = 0; // Wyzerowanie filtru marki
+            ModelComboBox.SelectedIndex = 0; // Wyzerowanie filtru modelu
+            MinYearTextBox.Text = string.Empty;
+            MaxYearTextBox.Text = string.Empty;
+            MinPriceTextBox.Text = string.Empty;
+            MaxPriceTextBox.Text = string.Empty;
+            MinMileageTextBox.Text = string.Empty;
+            MaxMileageTextBox.Text = string.Empty;
+
+            // Załaduj wszystkie samochody ponownie
+            LoadCars();
         }
 
         private void FilterCars_Click(object sender, RoutedEventArgs e)
@@ -38,6 +92,7 @@ namespace KCK_APP.WPF.Views
             MinMileageError.Visibility = Visibility.Collapsed;
             MaxMileageError.Visibility = Visibility.Collapsed;
 
+            // Walidacja wprowadzonych danych
             if (!string.IsNullOrWhiteSpace(MinYearTextBox.Text) && !int.TryParse(MinYearTextBox.Text, out _))
             {
                 MinYearError.Text = "Nieprawidłowy format roku!";
@@ -82,17 +137,17 @@ namespace KCK_APP.WPF.Views
 
             if (!isValid)
             {
-                return; // Przerwanie procesu filtrowania
+                return; // Przerwanie procesu filtrowania w przypadku błędów
             }
 
+            // Filtrowanie samochodów
             var filteredCars = _carController.GetAllCars().AsQueryable();
 
-            // Zamiana tekstów na małe litery do porównania
-            if (!string.IsNullOrWhiteSpace(MakeTextBox.Text))
-                filteredCars = filteredCars.Where(c => c.Make.ToLower().Contains(MakeTextBox.Text.ToLower()));
+            if (MakeComboBox.SelectedItem is string selectedMake && !string.IsNullOrEmpty(selectedMake))
+                filteredCars = filteredCars.Where(c => c.Make == selectedMake);
 
-            if (!string.IsNullOrWhiteSpace(ModelTextBox.Text))
-                filteredCars = filteredCars.Where(c => c.Model.ToLower().Contains(ModelTextBox.Text.ToLower()));
+            if (ModelComboBox.SelectedItem is string selectedModel && !string.IsNullOrEmpty(selectedModel))
+                filteredCars = filteredCars.Where(c => c.Model == selectedModel);
 
             if (int.TryParse(MinYearTextBox.Text, out int minYear))
                 filteredCars = filteredCars.Where(c => c.Year >= minYear);
@@ -112,6 +167,7 @@ namespace KCK_APP.WPF.Views
             if (decimal.TryParse(MaxPriceTextBox.Text, out decimal maxPrice))
                 filteredCars = filteredCars.Where(c => c.Price <= maxPrice);
 
+            // Aktualizacja listy wyfiltrowanych samochodów
             _cars.Clear();
             foreach (var car in filteredCars)
             {
@@ -121,6 +177,7 @@ namespace KCK_APP.WPF.Views
 
         private void CarsListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            // Przejście do widoku szczegółowego samochodu
             if (CarsListView.SelectedItem is Car selectedCar)
             {
                 MainWindow mainWindow = (MainWindow)Window.GetWindow(this);

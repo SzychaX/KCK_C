@@ -407,5 +407,20 @@ namespace KCK_APP.Services
                 throw new Exception($"Nie znaleziono samochodu o ID {id} w bazie danych.");
             }
         }
+        public List<string> GetUniqueModels()
+        {
+            var models = new List<string>();
+            using var conn = new NpgsqlConnection(ConnectionString);
+            conn.Open();
+
+            using var cmd = new NpgsqlCommand("SELECT DISTINCT Model FROM Cars ORDER BY Model", conn);
+            using var reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                models.Add(reader.GetString(0));
+            }
+
+            return models;
+        }
     }
 }

@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+  <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
   <PackageReference Include="MaterialDesignThemes" Version="3.2.0" />
   <PackageReference Include="MaterialDesignColors" Version="1.2.7" />
   <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0" />
@@ -34,6 +35,8 @@
       <XamlRuntime>Wpf</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Views\RegisterView.xaml" />
+    <Page Include="Views\ReservationFormView.xaml" />
     <Page Include="Views\SearchCarsView.xaml" />
   </ItemGroup>
 </Project>

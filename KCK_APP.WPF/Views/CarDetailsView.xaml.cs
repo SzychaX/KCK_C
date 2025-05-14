@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using KCK_APP.Models;
 
@@ -27,7 +28,7 @@ namespace KCK_APP.WPF.Views
             CarDescription.Inlines.Add(new System.Windows.Documents.Bold(new System.Windows.Documents.Run($"Rok: {_car.Year}\n")));
             CarDescription.Inlines.Add(new System.Windows.Documents.Bold(new System.Windows.Documents.Run($"Przebieg: {_car.Mileage} km\n")));
             CarDescription.Inlines.Add(new System.Windows.Documents.Bold(new System.Windows.Documents.Run($"Cena: {_car.Price} PLN\n")));
-            CarDescription.Inlines.Add(new System.Windows.Documents.Bold(new System.Windows.Documents.Run($"Pojemność silnika: {_car.Engine} cm³\n")));
+            CarDescription.Inlines.Add(new System.Windows.Documents.Bold(new System.Windows.Documents.Run($"Pojemność silnika: {Math.Round(_car.Engine, 1)} L\n")));
             CarDescription.Inlines.Add(new System.Windows.Documents.Bold(new System.Windows.Documents.Run($"Moc: {_car.HorsePower} KM\n")));
             CarDescription.Inlines.Add(new System.Windows.Documents.Bold(new System.Windows.Documents.Run($"Rodzaj nadwozia: {_car.Body}\n")));
             CarDescription.Inlines.Add(new System.Windows.Documents.Bold(new System.Windows.Documents.Run($"Kolor: {_car.Color}\n")));

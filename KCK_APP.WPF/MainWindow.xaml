@@ -5,15 +5,25 @@
         xmlns:views="clr-namespace:KCK_APP.WPF.Views"
         Title="KCK_APP"
         Height="750" Width="1400"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        WindowState="Maximized">
     <Grid>
         <!-- Menu nawigacyjne -->
         <DockPanel>
             <StackPanel DockPanel.Dock="Left" Width="200" Background="LightGray">
                 <TextBlock Text="Menu" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="10" />
                 <Button Content="Przeglądaj Auta" Click="ShowSearchCarsView" Margin="10" Width="150" />
-                <Button Content="Zarządzaj Autami" Click="ShowLoginView" Margin="10" Width="150" />
+                <Button Content="Rejestracja" Click="ShowRegisterView" Margin="10" Width="150" />
+                <Button Content="Login" Click="ShowLoginView" Margin="10" Width="150" />
+                <Button Content="Wyloguj" Click="Logout_Click" Margin="10" Width="150" />
+
+
+                <!-- Spacer żeby zepchnąć na dół -->
+                <StackPanel VerticalAlignment="Bottom" Margin="10">
+                    <TextBlock x:Name="LoggedInUserTextBlock" Text="Nie zalogowano" FontStyle="Italic" />
+                </StackPanel>
             </StackPanel>
+
 
             <!-- Główna zawartość -->
             <ContentControl x:Name="MainContent" Margin="10" />

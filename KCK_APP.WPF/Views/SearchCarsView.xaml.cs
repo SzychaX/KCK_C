@@ -1,7 +1,9 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Navigation;
 using KCK_APP.Controllers;
 using KCK_APP.Models;
 using KCK_APP.Services;
@@ -184,5 +186,37 @@ namespace KCK_APP.WPF.Views
                 mainWindow.MainContent.Content = new CarDetailsView(selectedCar);
             }
         }
+        private void ReserveButton_Click(object sender, RoutedEventArgs e)
+        {
+            var car = (sender as Button)?.DataContext as Car;
+            if (car == null) return;
+
+            // Pobierz MainWindow i sprawdź zalogowanego użytkownika:
+            var main = (MainWindow)Window.GetWindow(this);
+            if (main.LoggedInUser == null)
+            {
+                MessageBox.Show("Musisz się zalogować, aby rezerwować!", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+                main.ShowLoginView(null, null);
+                return;
+            }
+
+            // Wstaw formularz rezerwacji:
+            var form = new ReservationFormView(car.Id, (int)main.LoggedInUser.Id, RefreshCarsAfterReservation);
+            ReservationContainer.Content = form;
+        }
+
+// Funkcja, która odświeży listę po udanej rezerwacji:
+        private void RefreshCarsAfterReservation()
+        {
+            _cars = new ObservableCollection<Car>(
+                _carController.GetAllCars()
+                    .Where(c => !new DatabaseService()
+                        .GetReservationsByCarId((int)c.Id)
+                        .Any(r => r.status == "Aktywna" && r.end_date >= DateTime.Now))
+            );
+            CarsListView.ItemsSource = _cars;
+        }
+
+
     }
 }

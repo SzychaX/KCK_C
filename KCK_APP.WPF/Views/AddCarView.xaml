@@ -10,7 +10,7 @@
             <TextBox x:Name="ModelTextBox" materialDesign:HintAssist.Hint="Model" Margin="10" />
             <TextBox x:Name="YearTextBox" materialDesign:HintAssist.Hint="Rok" Margin="10" />
             <TextBox x:Name="MileageTextBox" materialDesign:HintAssist.Hint="Przebieg (km)" Margin="10" />
-            <TextBox x:Name="EngineTextBox" materialDesign:HintAssist.Hint="Silnik (cm³)" Margin="10" />
+            <TextBox x:Name="EngineTextBox" materialDesign:HintAssist.Hint="Silnik (L)" Margin="10" />
             <TextBox x:Name="HorsePowerTextBox" materialDesign:HintAssist.Hint="Moc (KM)" Margin="10" />
             <TextBox x:Name="BodyTextBox" materialDesign:HintAssist.Hint="Rodzaj Nadwozia" Margin="10" />
             <TextBox x:Name="ColorTextBox" materialDesign:HintAssist.Hint="Kolor" Margin="10" />

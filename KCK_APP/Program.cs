@@ -19,6 +19,7 @@ namespace KCK_APP
 
             // Utworzenie tabeli w bazie danych
             databaseService.CreateTable();
+            databaseService.CreateUserTable();
 
             // Wyświetlenie menu
             carView.DisplayMenu();

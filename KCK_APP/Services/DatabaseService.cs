@@ -28,7 +28,7 @@ namespace KCK_APP.Services
             Body VARCHAR(50),
             Color VARCHAR(50),
             Price DECIMAL,
-            ImageUrl VARCHAR(255), -- Nowa kolumna
+            ImageUrl VARCHAR(255)
         );", conn);
             cmd.ExecuteNonQuery();
         }
@@ -407,6 +407,7 @@ namespace KCK_APP.Services
                 throw new Exception($"Nie znaleziono samochodu o ID {id} w bazie danych.");
             }
         }
+
         public List<string> GetUniqueModels()
         {
             var models = new List<string>();
@@ -421,6 +422,205 @@ namespace KCK_APP.Services
             }
 
             return models;
+        }
+
+        public void CreateUserTable()
+        {
+            using var conn = new NpgsqlConnection(ConnectionString);
+            conn.Open();
+            using var cmd = new NpgsqlCommand(@"
+        CREATE TABLE IF NOT EXISTS Users (
+            Id SERIAL PRIMARY KEY,
+            Username VARCHAR(50) UNIQUE NOT NULL,
+            PasswordHash VARCHAR(255) NOT NULL,
+            Role VARCHAR(20) NOT NULL
+        );", conn);
+            cmd.ExecuteNonQuery();
+        }
+
+        public void AddUser(User user)
+        {
+            using var conn = new NpgsqlConnection(ConnectionString);
+            conn.Open();
+            using var cmd = new NpgsqlCommand(
+                "INSERT INTO Users (Username, PasswordHash, Role) VALUES (@u, @p, @r)", conn);
+            cmd.Parameters.AddWithValue("u", user.Username);
+            cmd.Parameters.AddWithValue("p", user.PasswordHash);
+            cmd.Parameters.AddWithValue("r", user.Role);
+            cmd.ExecuteNonQuery();
+        }
+
+        public User GetUserByUsername(string username)
+        {
+            using var conn = new NpgsqlConnection(ConnectionString);
+            conn.Open();
+            using var cmd = new NpgsqlCommand("SELECT Id, Username, PasswordHash, Role FROM Users WHERE Username=@u",
+                conn);
+            cmd.Parameters.AddWithValue("u", username);
+            using var reader = cmd.ExecuteReader();
+            if (reader.Read())
+            {
+                return new User
+                {
+                    Id = reader.GetInt64(0),
+                    Username = reader.GetString(1),
+                    PasswordHash = reader.GetString(2),
+                    Role = reader.GetString(3)
+                };
+            }
+
+            return null;
+        }
+
+        public void CreateReservationTable()
+        {
+            using var conn = new NpgsqlConnection(ConnectionString);
+            conn.Open();
+            using var cmd = new NpgsqlCommand(@"
+        CREATE TABLE IF NOT EXISTS Reservations (
+            Id SERIAL PRIMARY KEY,
+            CarId INTEGER NOT NULL REFERENCES Cars(Id),
+            UserId INTEGER NOT NULL REFERENCES Users(Id),
+            StartDate TIMESTAMP NOT NULL,
+            EndDate TIMESTAMP NOT NULL,
+            Status VARCHAR(20) NOT NULL
+        );", conn);
+            cmd.ExecuteNonQuery();
+        }
+
+        public static void AddReservation(Reservation reservation)
+        {
+            using var conn = new NpgsqlConnection(ConnectionString);
+            conn.Open();
+            using var cmd = new NpgsqlCommand(@"
+        INSERT INTO Reservations (CarId, UserId, StartDate, EndDate, Status)
+        VALUES (@carId, @userId, @startDate, @endDate, @status);", conn);
+            cmd.Parameters.AddWithValue("carId", reservation.car_id);
+            cmd.Parameters.AddWithValue("userId", reservation.user_id);
+            cmd.Parameters.AddWithValue("startDate", reservation.start_date);
+            cmd.Parameters.AddWithValue("endDate", reservation.end_date);
+            cmd.Parameters.AddWithValue("status", reservation.status);
+            cmd.ExecuteNonQuery();
+        }
+
+        public List<Reservation> GetAllReservations()
+        {
+            var reservations = new List<Reservation>();
+            using var conn = new NpgsqlConnection(ConnectionString);
+            conn.Open();
+            using var cmd = new NpgsqlCommand("SELECT * FROM Reservations;", conn);
+            using var reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                reservations.Add(new Reservation
+                {
+                    _id = reader.GetInt64(0),
+                    car_id = reader.GetInt32(1),
+                    user_id = reader.GetInt32(2),
+                    start_date = reader.GetDateTime(3),
+                    end_date = reader.GetDateTime(4),
+                    status = reader.GetString(5)
+                });
+            }
+
+            return reservations;
+        }
+
+        public Reservation? GetReservationById(long id)
+        {
+            using var conn = new NpgsqlConnection(ConnectionString);
+            conn.Open();
+            using var cmd = new NpgsqlCommand("SELECT * FROM Reservations WHERE Id = @id;", conn);
+            cmd.Parameters.AddWithValue("id", id);
+            using var reader = cmd.ExecuteReader();
+            if (reader.Read())
+            {
+                return new Reservation
+                {
+                    _id = reader.GetInt64(0),
+                    car_id = reader.GetInt32(1),
+                    user_id = reader.GetInt32(2),
+                    start_date = reader.GetDateTime(3),
+                    end_date = reader.GetDateTime(4),
+                    status = reader.GetString(5)
+                };
+            }
+
+            return null;
+        }
+
+        public void UpdateReservationStatus(long id, string newStatus)
+        {
+            using var conn = new NpgsqlConnection(ConnectionString);
+            conn.Open();
+            using var cmd = new NpgsqlCommand(@"
+        UPDATE Reservations
+        SET Status = @status
+        WHERE Id = @id;", conn);
+            cmd.Parameters.AddWithValue("status", newStatus);
+            cmd.Parameters.AddWithValue("id", id);
+            cmd.ExecuteNonQuery();
+        }
+
+        public void DeleteReservation(long id)
+        {
+            using var conn = new NpgsqlConnection(ConnectionString);
+            conn.Open();
+            using var cmd = new NpgsqlCommand("DELETE FROM Reservations WHERE Id = @id;", conn);
+            cmd.Parameters.AddWithValue("id", id);
+            int affected = cmd.ExecuteNonQuery();
+            if (affected == 0)
+            {
+                throw new Exception($"Nie znaleziono rezerwacji o ID {id}.");
+            }
+        }
+
+        public List<Reservation> GetReservationsByUserId(int userId)
+        {
+            var reservations = new List<Reservation>();
+            using var conn = new NpgsqlConnection(ConnectionString);
+            conn.Open();
+            using var cmd = new NpgsqlCommand("SELECT * FROM Reservations WHERE UserId = @userId;", conn);
+            cmd.Parameters.AddWithValue("userId", userId);
+            using var reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                reservations.Add(new Reservation
+                {
+                    _id = reader.GetInt64(0),
+                    car_id = reader.GetInt32(1),
+                    user_id = reader.GetInt32(2),
+                    start_date = reader.GetDateTime(3),
+                    end_date = reader.GetDateTime(4),
+                    status = reader.GetString(5)
+                });
+            }
+
+            return reservations;
+        }
+
+        public List<Reservation> GetReservationsByCarId(int carId)
+        {
+            var reservations = new List<Reservation>();
+            using var conn = new NpgsqlConnection(ConnectionString);
+            conn.Open();
+            using var cmd = new NpgsqlCommand("SELECT * FROM Reservations WHERE CarId = @carId;", conn);
+            cmd.Parameters.AddWithValue("carId", carId);
+            using var reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                reservations.Add(new Reservation
+                {
+                    _id = reader.GetInt64(0),
+                    car_id = reader.GetInt32(1),
+                    user_id = reader.GetInt32(2),
+                    start_date = reader.GetDateTime(3),
+                    end_date = reader.GetDateTime(4),
+                    status = reader.GetString(5)
+                });
+            }
+
+            return reservations;
         }
     }
 }

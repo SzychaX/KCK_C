@@ -4,16 +4,29 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:KCK_APP.WPF.Views"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
-        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-            <TextBlock Text="Zaloguj się" FontSize="24" FontWeight="Bold" Margin="10" HorizontalAlignment="Center" />
-            <TextBlock Text="Login:" />
-            <TextBox x:Name="LoginTextBox" Width="200" Margin="5" />
-            <TextBlock Text="Hasło:" />
-            <PasswordBox x:Name="PasswordBox" Width="200" Margin="5" />
-            <Button Content="Zaloguj" Width="100" Margin="10" Click="Login_Click" HorizontalAlignment="Center" />
+    <Grid Background="White">
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Width="300" >
+            <TextBlock Text="Logowanie" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" Margin="15"/>
+
+            <TextBlock Text="Nazwa użytkownika" FontSize="10" HorizontalAlignment="Center"></TextBlock>
+            <TextBox x:Name="LoginTextBox"
+                     Margin="10"
+                     materialDesign:HintAssist.Hint="Nazwa użytkownika"
+                     Style="{DynamicResource MaterialDesignOutlinedTextBox}" />
+
+            <TextBlock Text="Hasło" FontSize="10" HorizontalAlignment="Center"></TextBlock>
+            <PasswordBox x:Name="PasswordBox"
+                         Margin="10"
+                         materialDesign:HintAssist.Hint="Hasło"
+                         Style="{DynamicResource MaterialDesignOutlinedPasswordBox}" />
+
+            <Button Content="Zaloguj"
+                    Click="Login_Click"
+                    Style="{DynamicResource MaterialDesignRaisedButton}"
+                    HorizontalAlignment="Center" />
         </StackPanel>
     </Grid>
 </UserControl>

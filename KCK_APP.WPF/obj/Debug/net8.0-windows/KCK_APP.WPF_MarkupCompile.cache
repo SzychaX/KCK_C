@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-C:\Users\Kuba\Desktop\KCK_C\KCK_APP\KCK_APP.WPF\obj\Debug\net8.0-windows\
+C:\Users\Omen\Desktop\Projekty\KCK_C_DESKTOP\KCK_APP.WPF\obj\Debug\net8.0-windows\
 KCK_APP.WPF
 none
 false
 TRACE;DEBUG;NET;NET8_0;NETCOREAPP
-C:\Users\Kuba\Desktop\KCK_C\KCK_APP\KCK_APP.WPF\App.xaml
-81568857829
+C:\Users\Omen\Desktop\Projekty\KCK_C_DESKTOP\KCK_APP.WPF\App.xaml
+101799396802
 
-10-1798142604
-208885426551
-MainWindow.xaml;Views\AddCarView.xaml;Views\CarDetailsView.xaml;Views\DeleteCarView.xaml;Views\EditCarView.xaml;Views\LoginView.xaml;Views\ManageCarsView.xaml;Views\SearchCarsView.xaml;
+12-448133975
+2091219518586
+MainWindow.xaml;Views\AddCarView.xaml;Views\CarDetailsView.xaml;Views\DeleteCarView.xaml;Views\EditCarView.xaml;Views\LoginView.xaml;Views\ManageCarsView.xaml;Views\RegisterView.xaml;Views\ReservationFormView.xaml;Views\SearchCarsView.xaml;
 
 False
 

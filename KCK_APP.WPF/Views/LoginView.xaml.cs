@@ -36,7 +36,7 @@ namespace KCK_APP.WPF.Views
                     MessageBoxImage.Information);
 
                 // 3) Przejście do widoku zarządzania autami i aktualizacja paska
-                _mainWindow.ShowManageCarsView(user.Username);
+                _mainWindow.ShowSearchCarsView(null, null);
             }
             else
             {

@@ -4,9 +4,10 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:views="clr-namespace:KCK_APP.WPF.Views"
         Title="KCK_APP"
-        Height="750" Width="1400"
+        Height="1000" Width="1400"
         WindowStartupLocation="CenterScreen"
         WindowState="Maximized">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
     <Grid>
         <!-- Menu nawigacyjne -->
         <DockPanel>
@@ -29,4 +30,5 @@
             <ContentControl x:Name="MainContent" Margin="10" />
         </DockPanel>
     </Grid>
+    </ScrollViewer>
 </Window>

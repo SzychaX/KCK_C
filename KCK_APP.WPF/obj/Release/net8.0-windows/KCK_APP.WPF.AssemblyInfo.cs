@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("KCK_APP.WPF")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+dec20fbdf6b0fcfa437f7338826d598ab297fa93")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+dcc72ac83d94075d6cbb4652a23a0dd75e446ff9")]
 [assembly: System.Reflection.AssemblyProductAttribute("KCK_APP.WPF")]
 [assembly: System.Reflection.AssemblyTitleAttribute("KCK_APP.WPF")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -65,5 +65,56 @@ namespace KCK_APP.WPF.Views
                 LoadReservations();
             }
         }
+        private void PrintMyReservations_Click(object sender, RoutedEventArgs e)
+        {
+            if (_mainWindow.LoggedInUser == null)
+            {
+                MessageBox.Show("Musisz być zalogowany, aby drukować rezerwacje.", "Brak dostępu", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            var userReservations = _reservationController.GetAllReservations()
+                .Where(r => r.user_id == _mainWindow.LoggedInUser.Id)
+                .ToList();
+
+            if (!userReservations.Any())
+            {
+                MessageBox.Show("Nie masz żadnych rezerwacji do wydrukowania.", "Brak rezerwacji", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            // Pobierz auta i użytkowników (na wypadek, gdybyś chciał wyświetlić markę, model itp.)
+            var cars = _carController.GetAllCarsReservations();
+            var users = _userController.GetAllUsers();
+
+            // Przygotuj tekst do wydruku
+            var printText = new System.Text.StringBuilder();
+            printText.AppendLine($"Rezerwacje użytkownika: {_mainWindow.LoggedInUser.Username}");
+            printText.AppendLine(new string('-', 40));
+
+            foreach (var r in userReservations)
+            {
+                var car = cars.FirstOrDefault(c => c.Id == r.car_id);
+                printText.AppendLine($"Samochód: {car?.Make ?? "Nieznana marka"} {car?.Model ?? "Nieznany model"}");
+                printText.AppendLine($"Okres: {r.start_date:yyyy-MM-dd} - {r.end_date:yyyy-MM-dd}");
+                printText.AppendLine(new string('-', 40));
+            }
+
+            // Utwórz kontrolkę tekstową do wydruku
+            var textBlock = new TextBlock
+            {
+                Text = printText.ToString(),
+                FontFamily = new System.Windows.Media.FontFamily("Consolas"),
+                FontSize = 14,
+                Margin = new Thickness(20)
+            };
+
+            var printDialog = new PrintDialog();
+            if (printDialog.ShowDialog() == true)
+            {
+                printDialog.PrintVisual(textBlock, "Rezerwacje użytkownika");
+            }
+        }
+
     }
 }

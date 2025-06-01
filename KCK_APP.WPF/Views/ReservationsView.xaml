@@ -34,5 +34,6 @@
                 </GridView>
             </ListView.View>
         </ListView>
+        <Button Content="Drukuj moje rezerwacje" Click="PrintMyReservations_Click" Margin="5" />
     </Grid>
 </UserControl>

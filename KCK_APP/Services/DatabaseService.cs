@@ -64,7 +64,48 @@ namespace KCK_APP.Services
             using var conn = new NpgsqlConnection(ConnectionString);
             conn.Open();
 
-            using var cmd = new NpgsqlCommand("SELECT * FROM Cars;", conn);
+            using var cmd = new NpgsqlCommand(@"
+    SELECT * FROM Cars c
+    WHERE NOT EXISTS (
+        SELECT 1 FROM public.reservations r
+        WHERE r.carid = c.id
+          AND CURRENT_DATE BETWEEN r.startdate AND r.enddate
+    );", conn);
+
+
+            using var reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                cars.Add(new Car
+                {
+                    Id = reader.GetInt64(0),
+                    Make = reader.GetString(1),
+                    Model = reader.GetString(2),
+                    Year = reader.GetInt32(3),
+                    Mileage = reader.GetDecimal(4),
+                    Engine = reader.GetDecimal(5),
+                    HorsePower = reader.GetInt32(6),
+                    Body = reader.GetString(7),
+                    Color = reader.GetString(8),
+                    Price = reader.GetDecimal(9),
+                    ImageUrl = reader.IsDBNull(10) ? null : reader.GetString(10) // Obsługa kolumny ImageUrl
+                });
+            }
+
+            return cars;
+        }
+        
+        public List<Car> GetAllCarsReservations()
+        {
+            var cars = new List<Car>();
+
+            using var conn = new NpgsqlConnection(ConnectionString);
+            conn.Open();
+
+            using var cmd = new NpgsqlCommand(@"
+    SELECT * FROM Cars;", conn);
+
+
             using var reader = cmd.ExecuteReader();
             while (reader.Read())
             {
@@ -482,8 +523,7 @@ namespace KCK_APP.Services
             CarId INTEGER NOT NULL REFERENCES Cars(Id),
             UserId INTEGER NOT NULL REFERENCES Users(Id),
             StartDate TIMESTAMP NOT NULL,
-            EndDate TIMESTAMP NOT NULL,
-            Status VARCHAR(20) NOT NULL
+            EndDate TIMESTAMP NOT NULL
         );", conn);
             cmd.ExecuteNonQuery();
         }
@@ -493,13 +533,12 @@ namespace KCK_APP.Services
             using var conn = new NpgsqlConnection(ConnectionString);
             conn.Open();
             using var cmd = new NpgsqlCommand(@"
-        INSERT INTO Reservations (CarId, UserId, StartDate, EndDate, Status)
-        VALUES (@carId, @userId, @startDate, @endDate, @status);", conn);
+        INSERT INTO Reservations (CarId, UserId, StartDate, EndDate)
+        VALUES (@carId, @userId, @startDate, @endDate);", conn);
             cmd.Parameters.AddWithValue("carId", reservation.car_id);
             cmd.Parameters.AddWithValue("userId", reservation.user_id);
             cmd.Parameters.AddWithValue("startDate", reservation.start_date);
             cmd.Parameters.AddWithValue("endDate", reservation.end_date);
-            cmd.Parameters.AddWithValue("status", reservation.status);
             cmd.ExecuteNonQuery();
         }
 
@@ -518,8 +557,7 @@ namespace KCK_APP.Services
                     car_id = reader.GetInt32(1),
                     user_id = reader.GetInt32(2),
                     start_date = reader.GetDateTime(3),
-                    end_date = reader.GetDateTime(4),
-                    status = reader.GetString(5)
+                    end_date = reader.GetDateTime(4)
                 });
             }
 
@@ -541,25 +579,11 @@ namespace KCK_APP.Services
                     car_id = reader.GetInt32(1),
                     user_id = reader.GetInt32(2),
                     start_date = reader.GetDateTime(3),
-                    end_date = reader.GetDateTime(4),
-                    status = reader.GetString(5)
+                    end_date = reader.GetDateTime(4)
                 };
             }
 
             return null;
-        }
-
-        public void UpdateReservationStatus(long id, string newStatus)
-        {
-            using var conn = new NpgsqlConnection(ConnectionString);
-            conn.Open();
-            using var cmd = new NpgsqlCommand(@"
-        UPDATE Reservations
-        SET Status = @status
-        WHERE Id = @id;", conn);
-            cmd.Parameters.AddWithValue("status", newStatus);
-            cmd.Parameters.AddWithValue("id", id);
-            cmd.ExecuteNonQuery();
         }
 
         public void DeleteReservation(long id)
@@ -575,7 +599,7 @@ namespace KCK_APP.Services
             }
         }
 
-        public List<Reservation> GetReservationsByUserId(int userId)
+        public List<Reservation> GetReservationsByUserId(long userId)
         {
             var reservations = new List<Reservation>();
             using var conn = new NpgsqlConnection(ConnectionString);
@@ -591,15 +615,14 @@ namespace KCK_APP.Services
                     car_id = reader.GetInt32(1),
                     user_id = reader.GetInt32(2),
                     start_date = reader.GetDateTime(3),
-                    end_date = reader.GetDateTime(4),
-                    status = reader.GetString(5)
+                    end_date = reader.GetDateTime(4)
                 });
             }
 
             return reservations;
         }
 
-        public List<Reservation> GetReservationsByCarId(int carId)
+        public List<Reservation> GetReservationsByCarId(long carId)
         {
             var reservations = new List<Reservation>();
             using var conn = new NpgsqlConnection(ConnectionString);
@@ -615,12 +638,35 @@ namespace KCK_APP.Services
                     car_id = reader.GetInt32(1),
                     user_id = reader.GetInt32(2),
                     start_date = reader.GetDateTime(3),
-                    end_date = reader.GetDateTime(4),
-                    status = reader.GetString(5)
+                    end_date = reader.GetDateTime(4)
                 });
             }
 
             return reservations;
         }
+        public List<User> GetAllUsers()
+        {
+            var users = new List<User>();
+
+            using var connection = new NpgsqlConnection(ConnectionString);
+            connection.Open();
+
+            using var cmd = new NpgsqlCommand("SELECT id, username, passwordhash, role FROM users", connection);
+            using var reader = cmd.ExecuteReader();
+
+            while (reader.Read())
+            {
+                users.Add(new User
+                {
+                    Id = reader.GetInt64(0),
+                    Username = reader.GetString(1),
+                    PasswordHash = reader.GetString(2),
+                    Role = reader.GetString(3)
+                });
+            }
+
+            return users;
+        }
+        
     }
 }

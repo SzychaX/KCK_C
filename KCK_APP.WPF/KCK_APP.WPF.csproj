@@ -37,6 +37,7 @@
     </Page>
     <Page Include="Views\RegisterView.xaml" />
     <Page Include="Views\ReservationFormView.xaml" />
+    <Page Include="Views\ReservationsView.xaml" />
     <Page Include="Views\SearchCarsView.xaml" />
   </ItemGroup>
 </Project>

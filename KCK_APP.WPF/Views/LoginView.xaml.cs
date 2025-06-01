@@ -34,6 +34,10 @@ namespace KCK_APP.WPF.Views
                     "Sukces", 
                     MessageBoxButton.OK, 
                     MessageBoxImage.Information);
+                if (user != null)
+                {
+                    _mainWindow.OnUserLoggedIn(user);
+                }
 
                 // 3) Przejście do widoku zarządzania autami i aktualizacja paska
                 _mainWindow.ShowSearchCarsView(null, null);
@@ -46,5 +50,6 @@ namespace KCK_APP.WPF.Views
                     MessageBoxImage.Error);
             }
         }
+        
     }
 }

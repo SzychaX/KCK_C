@@ -11,6 +11,7 @@ public partial class ReservationFormView : UserControl
     private readonly long _carId;
     private readonly long _userId;
     private readonly Action _onReservationSuccess;
+    private readonly DatabaseService _databaseService = new DatabaseService();
 
     public ReservationFormView(long carId, long userId, Action onReservationSuccess)
     {
@@ -37,7 +38,6 @@ public partial class ReservationFormView : UserControl
             user_id = _userId,
             start_date = startDate.Value,
             end_date = endDate.Value,
-            status = "Aktywna"
         };
 
         DatabaseService.AddReservation(reservation);
@@ -46,4 +46,20 @@ public partial class ReservationFormView : UserControl
 
         _onReservationSuccess?.Invoke();
     }
+    private void UserControl_Loaded(object sender, RoutedEventArgs e)
+    {
+        var existingReservations = _databaseService.GetReservationsByCarId(_carId);
+
+        foreach (var reservation in existingReservations)
+        {
+            var range = new CalendarDateRange(reservation.start_date, reservation.end_date);
+            StartDatePicker.BlackoutDates.Add(range);
+            EndDatePicker.BlackoutDates.Add(range);
+        }
+
+        StartDatePicker.DisplayDateStart = DateTime.Today;
+        EndDatePicker.DisplayDateStart = DateTime.Today;
+    }
+
+
 }

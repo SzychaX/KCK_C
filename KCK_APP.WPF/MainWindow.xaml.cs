@@ -18,6 +18,7 @@ namespace KCK_APP.WPF
 
         public void ShowSearchCarsView(object sender, RoutedEventArgs e)
         {
+            UpdateMenuButtonsVisibility();
             MainContent.Content = new SearchCarsView();
         }
 
@@ -44,6 +45,50 @@ namespace KCK_APP.WPF
             LoggedInUser = null;
             LoggedInUserTextBlock.Text = "Nie zalogowano"; // resetujemy info o użytkowniku
             MessageBox.Show("Wylogowano pomyślnie.", "Wylogowanie", MessageBoxButton.OK, MessageBoxImage.Information);
+            UpdateMenuButtonsVisibility();
         }
+        
+        private void ShowManageCarsView(object sender, RoutedEventArgs e)
+        {
+            MainContent.Content = new ManageCarsView();
+        }
+        
+        private void UpdateMenuButtonsVisibility()
+        {
+            if (LoggedInUser != null)
+            {
+                ReservationsButton.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                ReservationsButton.Visibility = Visibility.Collapsed;
+            }
+
+            if (LoggedInUser != null && LoggedInUser.Username == "admin")
+            {
+                ManageCarsButton.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                ManageCarsButton.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        
+        public void OnUserLoggedIn(User user)
+        {
+            LoggedInUser = user;
+            LoggedInUserTextBlock.Text = $"Zalogowano jako: {user.Username}";
+            UpdateMenuButtonsVisibility();
+            ShowSearchCarsView(null, null);
+        }
+        
+        private void ShowReservationsView(object sender, RoutedEventArgs e)
+        {
+            MainContent.Content = new ReservationsView(this);
+        }
+
+
+
     }
 }

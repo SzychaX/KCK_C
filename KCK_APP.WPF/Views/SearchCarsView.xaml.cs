@@ -212,7 +212,7 @@ namespace KCK_APP.WPF.Views
                 _carController.GetAllCars()
                     .Where(c => !new DatabaseService()
                         .GetReservationsByCarId((int)c.Id)
-                        .Any(r => r.status == "Aktywna" && r.end_date >= DateTime.Now))
+                        .Any(r => r.end_date >= DateTime.Now))
             );
             CarsListView.ItemsSource = _cars;
         }

@@ -32,21 +32,15 @@ namespace KCK_APP.Controllers
         }
 
         // Pobierz rezerwacje użytkownika
-        public List<Reservation> GetReservationsByUserId(int userId)
+        public List<Reservation> GetReservationsByUserId(long userId)
         {
             return _databaseService.GetReservationsByUserId(userId);
         }
 
         // Pobierz rezerwacje dla auta
-        public List<Reservation> GetReservationsByCarId(int carId)
+        public List<Reservation> GetReservationsByCarId(long carId)
         {
             return _databaseService.GetReservationsByCarId(carId);
-        }
-
-        // Aktualizuj status rezerwacji
-        public void UpdateReservationStatus(long reservationId, string status)
-        {
-            _databaseService.UpdateReservationStatus(reservationId, status);
         }
 
         // Usuń rezerwację

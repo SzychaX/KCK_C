@@ -14,6 +14,8 @@
             <StackPanel DockPanel.Dock="Left" Width="200" Background="LightGray">
                 <TextBlock Text="Menu" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="10" />
                 <Button Content="Przeglądaj Auta" Click="ShowSearchCarsView" Margin="10" Width="150" />
+                <Button x:Name="ManageCarsButton" Content="Zarządzaj Autami" Click="ShowManageCarsView" Margin="10" Width="150" Visibility="Collapsed" />
+                <Button x:Name="ReservationsButton" Content="Rezerwacje" Click="ShowReservationsView" Margin="10" Width="150" Visibility="Collapsed" />
                 <Button Content="Rejestracja" Click="ShowRegisterView" Margin="10" Width="150" />
                 <Button Content="Login" Click="ShowLoginView" Margin="10" Width="150" />
                 <Button Content="Wyloguj" Click="Logout_Click" Margin="10" Width="150" />

@@ -22,4 +22,8 @@ public class UserController
             return user;
         return null;
     }
+    public List<User> GetAllUsers()
+    {
+        return _db.GetAllUsers();
+    }
 }

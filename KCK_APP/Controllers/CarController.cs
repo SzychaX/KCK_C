@@ -21,6 +21,11 @@ namespace KCK_APP.Controllers
         {
             return _databaseService.GetAllCars();
         }
+        
+        public List<Car> GetAllCarsReservations()
+        {
+            return _databaseService.GetAllCarsReservations();
+        }
 
         public List<Car> GetFilteredCars(string make, string model, int? minYear, int? maxYear, decimal? minMileage,
             decimal? maxMileage, decimal? minPrice, decimal? maxPrice, string color)
